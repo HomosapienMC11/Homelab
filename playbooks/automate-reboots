@@ -16,6 +16,12 @@
       ignore_errors: yes
       #when: inventory_hostname in groups['lxc']
 
+    - name: Debug Task Conditions
+      debug:
+        msg: "Item: {{ item }}, Hostname: {{ inventory_hostname }}, Groups: {{ groups }}"
+      when: item == inventory_hostname
+
+
     - name: Restart VMs in lxcs if ping fails
       shell: |
         if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
