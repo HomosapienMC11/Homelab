@@ -25,5 +25,5 @@
         msg: "Inventory hostname: {{ inventory_hostname }}, Item: {{ hostvars[inventory_hostname]['vm_id'] }}"
       loop: "{{ groups['lxc'] }}"
       loop_control:
-        loop_var: item
+        loop_var: hostvars[inventory_hostname]['vm_id']
       when: inventory_hostname in groups['lxc']
