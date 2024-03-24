@@ -23,8 +23,18 @@
       #  if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
       #    ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ hostvars[inventory_hostname]['vm_id'] }}"
       #  fi
-      debug:
-        var: ping_result_lxc
+      shell: |
+        if [ "{{ 'rc' in ping_result_lxc }}" ]; then
+          if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
+            ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ item }}"
+          fi
+        else
+          # Handle unreachable hosts
+          # For example, you can print a message or take appropriate action
+          debug:
+            msg: "Host {{ inventory_hostname }} is unreachable: {{ ping_result_lxc.msg }}"
+      #debug:
+      #  var: ping_result_lxc
       #  msg: "Inventory hostname: {{ inventory_hostname }}, Item: {{ hostvars[inventory_hostname]['vm_id'] }}"
       loop: "{{ groups['lxc'] }}"
       loop_control:
