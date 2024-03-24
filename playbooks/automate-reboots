@@ -8,7 +8,7 @@
     your_proxmox_host: "10.10.1.10"
   tasks:
     - name: Ping VMs in lxc
-      command: "ping -c 3 {{ ansible_host }}"  # Sends 3 ping packets to each host
+      command: "ping {{ ansible_host }}"  # Sends 3 ping packets to each host
       register: ping_result_lxc
       changed_when: false
       failed_when: ping_result_lxc.rc != 0
@@ -26,7 +26,7 @@
       when: inventory_hostname in groups['lxc']
 
     - name: Ping VMs in vms
-      command: "ping -c 3 {{ ansible_host }}"  # Sends 3 ping packets to each host
+      command: "ping {{ ansible_host }}"  # Sends 3 ping packets to each host
       register: ping_result_vm
       changed_when: false
       #failed_when: ping_result_vm.rc != 0
