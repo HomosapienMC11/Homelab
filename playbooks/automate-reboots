@@ -10,29 +10,35 @@
     - name: Ping VMs in lxc
       command: "ping -c 3 {{ ansible_host }}"  # Sends 3 ping packets to each host
       register: ping_result_lxc
+      changed_when: false
+      failed_when: ping_result_lxc.rc != 0
+      ignore_errors: yes
       when: inventory_hostname in groups['lxc']
 
     - name: Restart VMs in lxcs if ping fails
       shell: |
-        if [ "{{ ping_result.rc }}" != "0" ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no your_proxmox_username@your_proxmox_host "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
+        if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
         fi
-      loop: "{{ range(0, ping_result_lxc.results | length) | zip(ping_result_lxc.results) | list }}"
+      loop: "{{ ansible_play_hosts_all }}"
       loop_control:
-        loop_var: item
+        label: "{{ item }}"
       when: inventory_hostname in groups['lxc']
 
     - name: Ping VMs in vms
       command: "ping -c 3 {{ ansible_host }}"  # Sends 3 ping packets to each host
       register: ping_result_vm
+      changed_when: false
+      failed_when: ping_result_vm.rc != 0
+      ignore_errors: yes
       when: inventory_hostname in groups['vm']
 
-    - name: Restart VMs in Group 2 if ping fails
+    - name: Restart VMs in vms if ping fails
       shell: |
-        if [ "{{ ping_result.rc }}" != "0" ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no your_proxmox_username@your_proxmox_host "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
+        if [ "{{ ping_result_vm.rc }}" != "0" ]; then
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
         fi
-      loop: "{{ range(0, ping_result_vm.results | length) | zip(ping_result_vm.results) | list }}"
+      loop: "{{ ansible_play_hosts_all }}"
       loop_control:
-        loop_var: item
+        label: "{{ item }}"
       when: inventory_hostname in groups['vm']
