@@ -26,4 +26,4 @@
       loop: "{{ groups['lxc'] }}"
       loop_control:
         loop_var: hostvars[inventory_hostname]['vm_id']
-      when: inventory_hostname in groups['lxc']
+      when: ping_result_lxc.rc != 0
