@@ -17,10 +17,10 @@
       #when: inventory_hostname in groups['lxc']
 
     - name: Restart VMs in lxcs if ping fails
-      shell: |
-        if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ item }}"
-        fi
+      #shell: |
+      #  if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
+      #    ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ item }}"
+      #  fi
       debug:
         msg: "Inventory hostname: {{ inventory_hostname }}, Item: {{ item }}"
       loop: "{{ groups['lxc'] }}"
