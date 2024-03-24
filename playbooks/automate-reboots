@@ -23,7 +23,6 @@
       #  fi
       debug:
         msg: "Inventory hostname: {{ inventory_hostname }}, Item: {{ hostvars[inventory_hostname]['vm_id'] }}"
-      loop: "{{ groups['lxc'] }}"
+      loop: "{{ ping_result_lxc }}"
       loop_control:
         loop_var: hostvars[inventory_hostname]['vm_id']
-      when: ping_result_lxc.rc != 0
