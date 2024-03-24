@@ -14,7 +14,7 @@
 
     - name: Restart VMs in lxcs if ping fails
       shell: |
-        if [ "{{ ping_result_lxc.results[item.0].ping }}" != "pong" ]; then
+        if [ "{{ ping_result.rc }}" != "0" ]; then
           ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no your_proxmox_username@your_proxmox_host "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
         fi
       loop: "{{ range(0, ping_result_lxc.results | length) | zip(ping_result_lxc.results) | list }}"
@@ -29,7 +29,7 @@
 
     - name: Restart VMs in Group 2 if ping fails
       shell: |
-        if [ "{{ ping_result_vm.results[item.0].ping }}" != "pong" ]; then
+        if [ "{{ ping_result.rc }}" != "0" ]; then
           ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no your_proxmox_username@your_proxmox_host "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
         fi
       loop: "{{ range(0, ping_result_vm.results | length) | zip(ping_result_vm.results) | list }}"
