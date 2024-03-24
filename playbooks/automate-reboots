@@ -30,9 +30,9 @@
       command: "ping -c 1 {{ ansible_host }}"  # Sends 3 ping packets to each host
       register: ping_result_vm
       changed_when: false
-      #failed_when: ping_result_vm.rc != 0
+      failed_when: ping_result_vm.rc != 0
       ignore_errors: yes
-      when: inventory_hostname in groups['vm']
+      #when: inventory_hostname in groups['vm']
 
     - name: Restart VMs in vms if ping fails
       shell: |
