@@ -8,8 +8,7 @@
     your_proxmox_host: "10.10.1.10"
   tasks:
     - name: Ping VMs in lxc
-      ping:
-        count: 3  # Adjust the count as per your requirement
+      command: "ping -c 3 {{ ansible_host }}"  # Sends 3 ping packets to each host
       register: ping_result_lxc
       when: inventory_hostname in groups['lxc']
 
@@ -24,8 +23,7 @@
       when: inventory_hostname in groups['lxc']
 
     - name: Ping VMs in vms
-      ping:
-        count: 3  # Adjust the count as per your requirement
+      command: "ping -c 3 {{ ansible_host }}"  # Sends 3 ping packets to each host
       register: ping_result_vm
       when: inventory_hostname in groups['vm']
 
