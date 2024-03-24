@@ -1,0 +1,40 @@
+---
+- name: Ping VMs and Restart if Unreachable
+  hosts: all
+  gather_facts: no
+  vars:
+    proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
+    your_proxmox_username: "sshuser"
+    your_proxmox_host: "10.10.1.10"
+  tasks:
+    - name: Ping VMs in lxc
+      ping:
+        count: 3  # Adjust the count as per your requirement
+      register: ping_result_lxc
+      when: inventory_hostname in groups['lxc']
+
+    - name: Restart VMs in lxcs if ping fails
+      shell: |
+        if [ "{{ ping_result_lxc.results[item.0].ping }}" != "pong" ]; then
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no your_proxmox_username@your_proxmox_host "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
+        fi
+      loop: "{{ range(0, ping_result_lxc.results | length) | zip(ping_result_lxc.results) | list }}"
+      loop_control:
+        loop_var: item
+      when: inventory_hostname in groups['lxc']
+
+    - name: Ping VMs in vms
+      ping:
+        count: 3  # Adjust the count as per your requirement
+      register: ping_result_vm
+      when: inventory_hostname in groups['vm']
+
+    - name: Restart VMs in Group 2 if ping fails
+      shell: |
+        if [ "{{ ping_result_vm.results[item.0].ping }}" != "pong" ]; then
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no your_proxmox_username@your_proxmox_host "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
+        fi
+      loop: "{{ range(0, ping_result_vm.results | length) | zip(ping_result_vm.results) | list }}"
+      loop_control:
+        loop_var: item
+      when: inventory_hostname in groups['vm']
