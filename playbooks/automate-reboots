@@ -18,11 +18,11 @@
     - name: Restart VMs in lxcs if ping fails
       shell: |
         if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "qm shutdown {{ hostvars[item]['vm_id'] }} && qm start {{ hostvars[item]['vm_id'] }}"
         fi
-      loop: "{{ ansible_play_hosts_all }}"
+      loop: "{{ groups['lxc'] }}"
       loop_control:
-        label: "{{ item }}"
+        loop_var: item
       when: inventory_hostname in groups['lxc']
 
     - name: Ping VMs in vms
@@ -36,9 +36,9 @@
     - name: Restart VMs in vms if ping fails
       shell: |
         if [ "{{ ping_result_vm.rc }}" != "0" ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "qm shutdown {{ item.1.vm_id }} && qm start {{ item.1.vm_id }}"
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "qm shutdown {{ hostvars[item]['vm_id'] }} && qm start {{ hostvars[item]['vm_id'] }}"
         fi
-      loop: "{{ ansible_play_hosts_all }}"
+      loop: "{{ groups['vm'] }}"
       loop_control:
-        label: "{{ item }}"
+        loop_var: item
       when: inventory_hostname in groups['vm']
