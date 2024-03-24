@@ -2,6 +2,7 @@
 - name: Ping VMs and Restart if Unreachable
   hosts: all
   gather_facts: no
+  become: yes
   vars:
     proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
     your_proxmox_username: "sshuser"
