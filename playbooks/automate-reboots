@@ -28,4 +28,3 @@
       loop: "{{ groups['lxc'] }}"
       loop_control:
         loop_var: hostvars[inventory_hostname]['vm_id']
-      when: item in ping_result_lxc
