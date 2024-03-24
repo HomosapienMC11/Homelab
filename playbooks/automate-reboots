@@ -32,4 +32,5 @@
       #  msg: "Inventory hostname: {{ inventory_hostname }}, Item: {{ hostvars[inventory_hostname]['vm_id'] }}"
       loop: "{{ groups['lxc'] }}"
       loop_control:
-        loop_var: hostvars[inventory_hostname]['vm_id']
+        #loop_var: hostvars[inventory_hostname]['vm_id']
+        loop_var: item
