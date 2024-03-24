@@ -22,10 +22,10 @@
       #shell: |
       #  if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
       #    ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ hostvars[inventory_hostname]['vm_id'] }}"
-      #  fi
-      # if [ 'rc' in ping_result_lxc and ping_result_lxc.rc != 0 ]; then
-      shell: |  
-        if [ "{{ ping_result_lxc.unreachable }}" == "true" ]; then
+      #  fi 
+      #if [ 'rc' in ping_result_lxc and ping_result_lxc.rc != 0 ]; then
+      shell: |
+        if [ 'rc' not in ping_result_lxc ]; then
           ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ hostvars[inventory_hostname]['vm_id'] }}"
         fi
       #debug:
