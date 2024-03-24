@@ -13,23 +13,23 @@
       changed_when: false
       failed_when: ping_result_lxc.rc != 0
       ignore_errors: yes
-      when: inventory_hostname in groups['lxc']
+      #when: inventory_hostname in groups['lxc']
 
     - name: Restart VMs in lxcs if ping fails
       shell: |
         if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
           ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "/usr/sbin/pct shutdown {{ hostvars[item]['vm_id'] }} && /usr/sbin/pct start {{ hostvars[item]['vm_id'] }}"
         fi
-      loop: "{{ groups['lxc'] }}"
+      loop: "{{ ansible_play_batch }}"
       loop_control:
-        loop_var: item
-      when: inventory_hostname in groups['lxc']
+        label: "{{ item }}"
+      when: ping_result_lxc|failed
 
     - name: Ping VMs in vms
       command: "ping -c 3 {{ ansible_host }}"  # Sends 3 ping packets to each host
       register: ping_result_vm
       changed_when: false
-      failed_when: ping_result_vm.rc != 0
+      #failed_when: ping_result_vm.rc != 0
       ignore_errors: yes
       when: inventory_hostname in groups['vm']
 
