@@ -18,7 +18,7 @@
     - name: Restart VMs in lxcs if ping fails
       shell: |
         if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "/usr/sbin/pct shutdown {{ hostvars[item]['vm_id'] }} && /usr/sbin/pct start {{ hostvars[item]['vm_id'] }}"
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "/usr/sbin/pct start {{ hostvars[item]['vm_id'] }}"
         fi
       loop: "{{ groups['lxc'] }}"
       loop_control:
