@@ -20,10 +20,10 @@
         if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
           ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "/usr/sbin/pct shutdown {{ hostvars[item]['vm_id'] }} && /usr/sbin/pct start {{ hostvars[item]['vm_id'] }}"
         fi
-      loop: "{{ ansible_play_batch }}"
+      loop: "{{ groups['lxc'] }}"
       loop_control:
-        label: "{{ item }}"
-      when: ping_result_lxc|failed
+        loop_var: item
+      when: inventory_hostname in groups['lxc']
 
     - name: Ping VMs in vms
       command: "ping -c 3 {{ ansible_host }}"  # Sends 3 ping packets to each host
