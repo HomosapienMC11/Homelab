@@ -14,7 +14,7 @@
       changed_when: false
       failed_when: ping_result_lxc.rc != 0
       ignore_errors: yes
-      #when: inventory_hostname in groups['lxc']
+      when: inventory_hostname in groups['lxc']
 
     - name: Restart VMs in lxcs if ping fails
       #shell: |
