@@ -18,7 +18,7 @@
     - name: Restart VMs in lxcs if ping fails
       shell: |
         if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "qm shutdown {{ hostvars[item]['vm_id'] }} && qm start {{ hostvars[item]['vm_id'] }}"
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "/usr/sbin/pct shutdown {{ hostvars[item]['vm_id'] }} && /usr/sbin/pct start {{ hostvars[item]['vm_id'] }}"
         fi
       loop: "{{ groups['lxc'] }}"
       loop_control:
@@ -36,7 +36,7 @@
     - name: Restart VMs in vms if ping fails
       shell: |
         if [ "{{ ping_result_vm.rc }}" != "0" ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "qm shutdown {{ hostvars[item]['vm_id'] }} && qm start {{ hostvars[item]['vm_id'] }}"
+          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "/usr/sbin/qm shutdown {{ hostvars[item]['vm_id'] }} && /usr/sbin/qm start {{ hostvars[item]['vm_id'] }}"
         fi
       loop: "{{ groups['vm'] }}"
       loop_control:
