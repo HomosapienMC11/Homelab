@@ -19,19 +19,14 @@
       when: inventory_hostname in groups['lxc']
 
     - name: Restart VMs in lxcs if ping fails
-      #shell: |
-      #  if [ "{{ ping_result_lxc.rc }}" != "0" ]; then
-      #    ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ hostvars[inventory_hostname]['vm_id'] }}"
-      #  fi 
-      #if [ 'rc' in ping_result_lxc and ping_result_lxc.rc != 0 ]; then
       shell: |
         if [ 'rc' not in ping_result_lxc ]; then
-          ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ hostvars[inventory_hostname]['vm_id'] }}"
+          ssh -i {{ proxmox_ssh_key }} -oStrictHostKeyChecking=no 'sshuser@10.10.1.10' "/usr/sbin/pct start {{ hostvars[inventory_hostname]['vm_id'] }}"
         fi
       #debug:
       #  var: ping_result_lxc
-      #  msg: "Inventory hostname: {{ inventory_hostname }}, Item: {{ hostvars[inventory_hostname]['vm_id'] }}"
+      #  msg: "Inventory hostname: {{ inventory_hostname }}, VM ID: {{ hostvars[inventory_hostname]['vm_id'] }}"
       loop: "{{ groups['lxc'] }}"
       loop_control:
-        #loop_var: hostvars[inventory_hostname]['vm_id']
-        loop_var: item
+        loop_var: hostvars[inventory_hostname]['vm_id']
+        #loop_var: item
