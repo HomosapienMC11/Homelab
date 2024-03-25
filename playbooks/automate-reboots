@@ -24,15 +24,15 @@
 
     - name: Debug failed VMs
       debug:
-        var: failed_vms
+        var: ping_result_lxcs
 
     - name: Send shell command for failed VMs
       shell: |
-        for failed_vm in {{ failed_vms }};
+        for ping_result_lxc in {{ ping_result_lxcs }};
         do
           # Extract IP and VM ID from failed VM
-          ip_address="{{ failed_vm['ansible_host'] }}"
-          vm_id="{{ hostvars[failed_vm['inventory_hostname']]['vm_id'] }}"
+          ip_address="{{ ping_result_lxc['ansible_host'] }}"
+          vm_id="{{ hostvars[ping_result_lxc['inventory_hostname']]['vm_id'] }}"
       
           # Your shell command using IP address and VM ID
           # Example:
@@ -40,4 +40,4 @@
       
           echo "Failed VM ID: $vm_id, IP Address: $ip_address"
         done
-      when: failed_vms | length > 0
+      when: ping_result_lxcs | length > 0
