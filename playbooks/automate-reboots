@@ -20,7 +20,7 @@
 
     - name: Identify failed VMs
       set_fact:
-        failed_vms: "{{ ping_result_lxcs.results | selectattr('unreachable', 'defined') | list }}"
+        failed_vms: "{{ ping_result_lxcs | selectattr('unreachable', 'defined') | list }}"
 
     - name: Debug failed VMs
       debug:
