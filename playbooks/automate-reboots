@@ -38,6 +38,6 @@
           # Example:
           # ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@{{ your_proxmox_host }} "/usr/sbin/pct start {{ vm_id }}"
       
-          echo "Failed VM ID: $vm_id, IP Address: $ip_address"
+    #      echo "Failed VM ID: $vm_id, IP Address: $ip_address"
     #    done
     #  when: failed_vm | length > 0
