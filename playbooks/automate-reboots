@@ -20,7 +20,7 @@
 
     - name: Identify failed VMs and store IP address and vm_id
       set_fact:
-        failed_vms: "{{ ping_result_lxcs | selectattr('unreachable', 'defined') | map(attribute='ansible_host') | map('extract', hostvars[item]['vm_id']) | map('combine', {'ip_address': item, 'vm_id': hostvars[item]['vm_id']}) | list }}"
+        failed_vms: "{{ ping_result_lxcs | selectattr('unreachable', 'defined') | map(attribute='ansible_host') | map('extract', hostvars['lxc'].vm_id) | map('combine', {'ip_address': item, 'vm_id': hostvars['lxc'].vm_id}) | list }}"
 
     - name: Debug failed VMs
       debug:
