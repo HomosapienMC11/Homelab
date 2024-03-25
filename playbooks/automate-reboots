@@ -18,26 +18,24 @@
       ignore_unreachable: true
       when: inventory_hostname in groups['lxc']
 
-    - name: Identify failed VMs
-      set_fact:
-        failed_vms: "{{ ping_result_lxcs | selectattr('unreachable', 'defined') | list }}"
-
     - name: Debug failed VMs
       debug:
-        var: failed_vms
+        var: ping_result_lxcs
 
     - name: Send shell command for failed VMs
       shell: |
-        for ping_result_lxcs in {{ failed_vms }};
+        for ping_result_lxc in {{ ping_result_lxcs.results }};
         do
-          # Extract IP and VM ID from failed VM
-          ip_address="{{ ping_result_lxcs['ansible_host'] }}"
-          vm_id="{{ hostvars[ping_result_lxcs['inventory_hostname']]['vm_id'] }}"
-      
-          # Your shell command using IP address and VM ID
-          # Example:
-          # ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@{{ your_proxmox_host }} "/usr/sbin/pct start {{ vm_id }}"
-      
-          echo "Failed VM ID: $vm_id, IP Address: $ip_address"
+          if 'unreachable' in ping_result_lxc and ping_result_lxc.unreachable == true; then
+            # Extract IP and VM ID from failed VM
+            ip_address="{{ ping_result_lxc['ansible_host'] }}"
+            vm_id="{{ hostvars[inventory_hostname]['vm_id'] }}"
+        
+            # Your shell command using IP address and VM ID
+            # Example:
+            # ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no {{ your_proxmox_username }}@{{ your_proxmox_host }} "/usr/sbin/pct start {{ vm_id }}"
+        
+            echo "Failed VM ID: $vm_id, IP Address: $ip_address"
+          fi
         done
       when: ping_result_lxcs | length > 0
