@@ -10,7 +10,7 @@
     your_proxmox_host: "10.10.1.10"
   tasks:
     - name: Ping VMs in lxc
-      command: "ping -c 1 {{ ansible_host }}"  # Sends 1 ping packets to each host
+      command: "ping -c 1 {{ ansible_host }}"  # Sends 1 ping packet to each host
       register: ping_result_lxcs
       changed_when: false
       failed_when: ping_result_lxcs.rc != 0
@@ -24,20 +24,20 @@
 
     - name: Debug failed VMs
       debug:
-        var: ping_result_lxcs
+        var: failed_vms
 
     - name: Send shell command for failed VMs
       shell: |
-        for ping_result_lxc in {{ ping_result_lxcs }};
+        for failed_vm in {{ failed_vms }};
         do
           # Extract IP and VM ID from failed VM
-          ip_address="{{ ping_result_lxc['ansible_host'] }}"
-          vm_id="{{ ping_result_lxc['vm_id'] }}"
+          ip_address="{{ failed_vm['ansible_host'] }}"
+          vm_id="{{ hostvars[failed_vm['inventory_hostname']]['vm_id'] }}"
       
           # Your shell command using IP address and VM ID
           # Example:
-          # ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@{{ ip_address }} "/usr/sbin/pct start {{ vm_id }}"
+          # ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@{{ your_proxmox_host }} "/usr/sbin/pct start {{ vm_id }}"
       
           echo "Failed VM ID: $vm_id, IP Address: $ip_address"
         done
-      when: ping_result_lxc | length > 0
+      when: failed_vms | length > 0
