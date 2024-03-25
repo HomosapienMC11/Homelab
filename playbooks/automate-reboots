@@ -18,26 +18,11 @@
       ignore_unreachable: true
       when: inventory_hostname in groups['lxc']
 
-    - name: Identify failed VMs
+    - name: Identify failed VMs and store IP address and vm_id
       set_fact:
-        failed_vms: "{{ ping_result_lxcs | selectattr('unreachable', 'defined') | list }}"
+      failed_vms: "{{ ping_result_lxcs | selectattr('unreachable', 'defined') | map(attribute='item') | map('combine', {'ip_address': ansible_host, 'vm_id': hostvars[item['inventory_hostname']]['vm_id']}) | list }}"
 
     - name: Debug failed VMs
       debug:
         var: failed_vms
 
-    - name: Send shell command for failed VMs
-      shell: |
-        for failed_vm in {{ failed_vms }};
-        do
-          # Extract IP and VM ID from failed VM
-          ip_address="{{ failed_vm['ansible_host'] }}"
-          vm_id="{{ hostvars[failed_vm['inventory_hostname']]['vm_id'] }}"
-      
-          # Your shell command using IP address and VM ID
-          # Example:
-          # ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@{{ your_proxmox_host }} "/usr/sbin/pct start {{ vm_id }}"
-      
-          echo "Failed VM ID: $vm_id, IP Address: $ip_address"
-        done
-      when: failed_vm | length > 0
