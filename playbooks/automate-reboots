@@ -11,21 +11,33 @@
   tasks:
     - name: Ping VMs in lxc
       command: "ping -c 1 {{ ansible_host }}"  # Sends 1 ping packets to each host
-      register: ping_result_lxc
+      register: ping_result_lxcs
       changed_when: false
-      failed_when: ping_result_lxc.rc != 0
+      failed_when: ping_result_lxcs.rc != 0
       ignore_errors: yes
       ignore_unreachable: true
       when: inventory_hostname in groups['lxc']
 
-    - name: Restart VMs in lxcs if ping fails
-      shell: |
-        if [ 'rc' not in ping_result_lxc ]; then
-          ssh -i {{ proxmox_ssh_key }} -oStrictHostKeyChecking=no 'sshuser@10.10.1.10' "/usr/sbin/pct start {{ hostvars[inventory_hostname]['vm_id'] }}"
-        fi
+    - name: Identify failed VMs
+      set_fact:
+        failed_vms: "{{ ping_result_lxcs.results | selectattr('unreachable', 'defined') | list }}"
+
+    - name: Debug failed VMs
       debug:
-        msg: "Inventory hostname: {{ inventory_hostname }}, VM ID: {{ hostvars[inventory_hostname]['vm_id'] }}"
-        loop: "{{ groups['lxc'] }}"
-        loop_control:
-        loop_var: hostvars[inventory_hostname]['vm_id']
-        #loop_var: item
+        var: ping_result_lxcs
+
+    - name: Send shell command for failed VMs
+      shell: |
+        for ping_result_lxc in {{ ping_result_lxcs }};
+        do
+          # Extract IP and VM ID from failed VM
+          ip_address="{{ ping_result_lxc['ansible_host'] }}"
+          vm_id="{{ ping_result_lxc['vm_id'] }}"
+      
+          # Your shell command using IP address and VM ID
+          # Example:
+          # ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@{{ ip_address }} "/usr/sbin/pct start {{ vm_id }}"
+      
+          echo "Failed VM ID: $vm_id, IP Address: $ip_address"
+        done
+      when: ping_result_lxc | length > 0
