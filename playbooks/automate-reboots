@@ -25,7 +25,7 @@
     - name: Set fact for failed VMs
       set_fact:
         failed_vms: []
-      when: ping_result_lxcs.failed
+      when: ping_result_lxcs.unreachable
       vars:
         failed_host: "{{ groups['lxc'] | intersect(inventory_hostname) | first }}"
       run_once: true
@@ -33,7 +33,7 @@
     - name: Add failed VM to failed_vms list
       set_fact:
         failed_vms: "{{ failed_vms + [{'ip_address': hostvars[failed_host]['ansible_host'], 'vm_id': hostvars['lxc'].vm_id}] }}"
-      when: ping_result_lxcs.failed
+      when: ping_result_lxcs.unreachable
       run_once: true
 
     #- name: Identify failed VMs and store IP address and vm_id
