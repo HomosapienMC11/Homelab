@@ -29,12 +29,8 @@
       loop: "{{ groups['lxc'] }}"
 
     - name: Display failed LXC hosts
-      hosts: lxc
-      gather_facts: no
-      tasks:
-        - name: Print failed LXC hosts
-          debug:
-            msg: "Failed LXC hosts: {{ failed_lxcs }}"
+      debug:
+        msg: "Failed LXC hosts: {{ failed_lxcs }}"
 
     #- name: Send shell command for failed VMs
     #  shell: |
