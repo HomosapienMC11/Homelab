@@ -34,5 +34,5 @@
 
     - name: Send shell command for failed VMs
       shell: |
-        ssh -i "{{ proxmox_ssh_key }}" -oStrictHostKeyChecking=no sshuser@10.10.1.10 "/usr/sbin/pct start {{ item }}"
+        ssh -i "{{ proxmox_ssh_key }}" -StrictHostKeyChecking=no -o sshuser@10.10.1.10 "/usr/sbin/pct start {{ item }}"
       loop: "{{ failed_lxcs }}"
