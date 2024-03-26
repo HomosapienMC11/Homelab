@@ -25,7 +25,7 @@
     - name: Gather failed LXC hosts
       set_fact:
         failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[item].vm_id] }}"
-      when: ping_result_lxcs.rc != 0
+      when: hostvars[item].ping_result_lxcs.unreachable
       loop: "{{ groups['lxc'] }}"
 
     - name: Display failed LXC hosts
