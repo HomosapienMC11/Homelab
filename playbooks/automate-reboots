@@ -22,27 +22,19 @@
       debug:
         var: ping_result_lxcs
 
-    - name: Set fact for failed VMs
+    - name: Gather failed LXC hosts
       set_fact:
-        failed_vms: []
-      when: ping_result_lxcs.unreachable
-      vars:
-        failed_host: "{{ groups['lxc'] | intersect(inventory_hostname) | first }}"
-      run_once: true
+        failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[item].vm_id] }}"
+      when: ping_result_lxcs.rc != 0
+      loop: "{{ groups['lxc'] }}"
 
-    - name: Add failed VM to failed_vms list
-      set_fact:
-        failed_vms: "{{ failed_vms + [{'ip_address': hostvars[failed_host]['ansible_host'], 'vm_id': hostvars['lxc'].vm_id}] }}"
-      when: ping_result_lxcs.unreachable
-      run_once: true
-
-    #- name: Identify failed VMs and store IP address and vm_id
-    #  set_fact:
-    #    failed_vms: "{{ ping_result_lxcs | selectattr('unreachable', 'defined') | map(attribute='ansible_host') | map('extract', hostvars['lxc'].vm_id) | map('combine', {'ip_address': item, 'vm_id': hostvars['lxc'].vm_id}) | list }}"
-
-    - name: Debug failed VMs
-      debug:
-        var: failed_vms
+    - name: Display failed LXC hosts
+      hosts: lxc
+      gather_facts: no
+      tasks:
+        - name: Print failed LXC hosts
+          debug:
+            msg: "Failed LXC hosts: {{ failed_lxcs }}"
 
     #- name: Send shell command for failed VMs
     #  shell: |
