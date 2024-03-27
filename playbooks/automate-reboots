@@ -36,5 +36,5 @@
     - name: Send shell command for failed VMs
       delegate_to: localhost
       shell: |
-        ssh sshuser@10.10.1.10 "/usr/sbin/pct start {{ item }}"
+        ssh -i "{{ proxmox_ssh_key }}" -StrictHostKeyChecking=no -o sshuser@10.10.1.10 "/usr/sbin/pct start {{ item }}"
       loop: "{{ failed_lxcs }}"
