@@ -11,6 +11,7 @@
   tasks:
     - name: Ping VMs in lxc
       command: "ping -c 1 {{ ansible_host }}"  # Sends 1 ping packet to each host
+      delegate_to: localhost
       register: ping_result_lxcs
       changed_when: false
       failed_when: ping_result_lxcs.rc != 0
@@ -33,6 +34,7 @@
         msg: "Failed LXC hosts: {{ failed_lxcs }}"
 
     - name: Send shell command for failed VMs
+      delegate_to: localhost
       shell: |
         ssh -i "{{ proxmox_ssh_key }}" -StrictHostKeyChecking=no -o sshuser@10.10.1.10 "/usr/sbin/pct start {{ item }}"
       loop: "{{ failed_lxcs }}"
