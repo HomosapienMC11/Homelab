@@ -1,6 +1,6 @@
 ---
 - name: Ping VMs and Restart if Unreachable
-  #hosts: all
+  hosts: all
   ignore_unreachable: true
   gather_facts: no
   become: yes
