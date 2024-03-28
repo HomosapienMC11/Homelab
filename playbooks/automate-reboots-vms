@@ -31,7 +31,7 @@
         failed_vms: "{{ failed_vms | default([]) + [hostvars[item].vm_id] }}"
         a_failed_vms: true
       when: ping_result_vms.rc != 0
-      #with_items: "{{ groups['vm'] }}"
+      with_items: "{{ groups['vm'] }}"
 
     - name: Display failed VM hosts
       debug:
