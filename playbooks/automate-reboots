@@ -20,9 +20,9 @@
       ignore_unreachable: true
       when: inventory_hostname in groups['lxc']
 
-    - name: Debug failed VMs
-      debug:
-        var: ping_result_lxcs
+    #- name: Debug failed VMs
+    #  debug:
+    #    var: ping_result_lxcs
 
     - name: Gather failed LXC hosts
       set_fact:
