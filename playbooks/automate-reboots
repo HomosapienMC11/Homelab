@@ -18,7 +18,7 @@
       delegate_to: localhost
       register: ping_result_lxcs
       changed_when: false
-      #failed_when: ping_result_lxcs.rc != 0
+      failed_when: ping_result_lxcs.rc != 0
       ignore_errors: yes
       ignore_unreachable: true
       when: inventory_hostname in groups['lxc']
@@ -31,7 +31,7 @@
       set_fact:
         failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[item].vm_id] }}"
         a_failed_lxcs: true
-      when: ping_result_lxcs.rc != 0
+      when: ping_result_lxcs|failed
       with_items: "{{ groups['lxc'] }}"
 
     - name: Display failed LXC hosts
@@ -52,6 +52,7 @@
       delegate_to: localhost
       register: ping_result_vms
       changed_when: false
+      failed_when: ping_result_vms.rc != 0
       ignore_errors: yes
       ignore_unreachable: true
       when: inventory_hostname in groups['vm']
@@ -64,7 +65,7 @@
       set_fact:
         failed_vms: "{{ failed_vms | default([]) + [hostvars[item].vm_id] }}"
         a_failed_vms: true
-      when: ping_result_vms.rc != 0
+      when: ping_result_vms|failed
       with_items: "{{ groups['vm'] }}"
 
     - name: Display failed VM hosts
