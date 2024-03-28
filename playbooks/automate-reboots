@@ -18,7 +18,7 @@
       delegate_to: localhost
       register: ping_result_lxcs
       changed_when: false
-      failed_when: ping_result_lxcs.rc != 0
+      #failed_when: ping_result_lxcs.rc != 0
       ignore_errors: yes
       ignore_unreachable: true
       when: inventory_hostname in groups['lxc']
@@ -37,14 +37,14 @@
     - name: Display failed LXC hosts
       debug:
         msg: "Failed LXC hosts: {{ failed_lxcs }}"
-      when: a_failed_lxcs == true
+      when: a_failed_lxcs
 
     - name: Send shell command for failed VMs
       delegate_to: localhost
       shell: |
         ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo lxc-start -n {{ item }}
       loop: "{{ failed_lxcs }}"
-      when: a_failed_lxcs == true
+      when: a_failed_lxcs
     
     #VMs---------------------------------------------------------------------------------------
     - name: Ping VMs in vm
@@ -52,7 +52,6 @@
       delegate_to: localhost
       register: ping_result_vms
       changed_when: false
-      failed_when: ping_result_vms.rc != 0
       ignore_errors: yes
       ignore_unreachable: true
       when: inventory_hostname in groups['vm']
@@ -71,11 +70,11 @@
     - name: Display failed VM hosts
       debug:
         msg: "Failed VM hosts: {{ failed_vms }}"
-      when: a_failed_vms == true
+      when: a_failed_vms
 
     - name: Send shell command for failed VMs
       delegate_to: localhost
       shell: |
         ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo qm start {{ item }}
       loop: "{{ failed_vms }}"
-      when: a_failed_vms == true
+      when: a_failed_vms
