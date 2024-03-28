@@ -34,11 +34,12 @@
     - name: Display failed LXC hosts
       debug:
         msg: "Failed LXC hosts: {{ failed_lxcs }}"
+      when: a_failed_lxcs == true
 
     - name: Send shell command for failed VMs
       delegate_to: localhost
       shell: |
         ssh -i "{{ proxmox_ssh_key }}" sshuser@10.10.1.10 -t sudo lxc-start -n {{ item }}
       loop: "{{ failed_lxcs }}"
-      when: failed_lxcs | length > 0
+      when: a_failed_lxcs == true
       #-StrictHostKeyChecking=no
