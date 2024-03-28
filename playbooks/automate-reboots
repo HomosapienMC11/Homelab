@@ -5,7 +5,7 @@
   gather_facts: no
   become: yes
   vars:
-    failed_lxcs: ""
+    a_failed_lxcs: false
     proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
     your_proxmox_username: "sshuser"
     your_proxmox_host: "10.10.1.10"
@@ -27,6 +27,7 @@
     - name: Gather failed LXC hosts
       set_fact:
         failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[item].vm_id] }}"
+        a_failed_lxcs: true
       when: ping_result_lxcs.rc != 0
       loop: "{{ groups['lxc'] }}"
 
