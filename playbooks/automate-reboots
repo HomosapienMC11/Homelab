@@ -1,6 +1,6 @@
 ---
 - name: Ping VMs and Restart if Unreachable
-  hosts: all
+  hosts: lxc
   ignore_unreachable: true
   gather_facts: no
   become: yes
@@ -21,7 +21,7 @@
       failed_when: ping_result_lxcs.rc != 0
       ignore_errors: yes
       ignore_unreachable: true
-      when: inventory_hostname in groups['lxc']
+      #when: inventory_hostname in groups['lxc']
 
     #- name: Debug failed VMs
     #  debug:
@@ -31,8 +31,8 @@
       set_fact:
         failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[item].vm_id] }}"
         a_failed_lxcs: true
-      when: ping_result_lxcs|failed
-      with_items: "{{ groups['lxc'] }}"
+      when: ping_result_lxcs.rc != 0
+      #with_items: "{{ groups['lxc'] }}"
 
     - name: Display failed LXC hosts
       debug:
@@ -45,37 +45,3 @@
         ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo lxc-start -n {{ item }}
       loop: "{{ failed_lxcs }}"
       when: a_failed_lxcs
-    
-    #VMs---------------------------------------------------------------------------------------
-    - name: Ping VMs in vm
-      command: "ping -c 1 {{ ansible_host }}"  # Sends 1 ping packet to each host
-      delegate_to: localhost
-      register: ping_result_vms
-      changed_when: false
-      failed_when: ping_result_vms.rc != 0
-      ignore_errors: yes
-      ignore_unreachable: true
-      when: inventory_hostname in groups['vm']
-
-    #- name: Debug failed VMs
-    #  debug:
-    #    var: ping_result_vms
-
-    - name: Gather failed VM hosts
-      set_fact:
-        failed_vms: "{{ failed_vms | default([]) + [hostvars[item].vm_id] }}"
-        a_failed_vms: true
-      when: ping_result_vms|failed
-      with_items: "{{ groups['vm'] }}"
-
-    - name: Display failed VM hosts
-      debug:
-        msg: "Failed VM hosts: {{ failed_vms }}"
-      when: a_failed_vms
-
-    - name: Send shell command for failed VMs
-      delegate_to: localhost
-      shell: |
-        ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo qm start {{ item }}
-      loop: "{{ failed_vms }}"
-      when: a_failed_vms
