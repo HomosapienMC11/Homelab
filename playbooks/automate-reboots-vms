@@ -41,6 +41,6 @@
     - name: Send shell command for failed VMs
       delegate_to: localhost
       shell: |
-        ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo qm start {{ item }}
+        ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo /usr/bin/qm start {{ item }}
       loop: "{{ failed_vms }}"
       when: a_failed_vms
