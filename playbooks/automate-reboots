@@ -38,4 +38,5 @@
       shell: |
         ssh -i "{{ proxmox_ssh_key }}" sshuser@10.10.1.10 -t sudo lxc-start -n {{ item }}
       loop: "{{ failed_lxcs }}"
+      when: failed_lxcs | length > 0
       #-StrictHostKeyChecking=no
