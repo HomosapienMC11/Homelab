@@ -14,6 +14,7 @@
   tasks:
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
+      run_once: true
       delegate_to: localhost  # Run only once on the control node
       command: ping -c 2 "{{ TrueNAS_IP }}"
       ignore_unreachable: true
@@ -21,7 +22,6 @@
       changed_when: false 
       check_mode: false
       register: router_ping
-      when: inventory_hostname  == localhost
     
     - name: Fix TrueNAS if Ded
       debug:
