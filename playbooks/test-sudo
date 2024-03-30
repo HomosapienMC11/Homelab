@@ -1,0 +1,17 @@
+---
+- name: Ping VMs and Restart if Unreachable
+  hosts: lxc
+  gather_facts: no
+  become: false
+  vars:
+    proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
+    your_proxmox_username: "sshuser"
+    your_proxmox_host: "10.10.1.10"
+
+  tasks:
+    - name: Send shell command for failed VMs
+      delegate_to: localhost
+      become: true
+      become_user: sshuser
+      shell: |
+        ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo crontab -e
