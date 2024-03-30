@@ -1,6 +1,6 @@
 ---
 - name: Check for the SMB Share being mounted on Applicable VMs/LXCs
-  hosts: localhost
+  hosts: SMB
   gather_facts: no
   become: false
   vars_files:
@@ -14,6 +14,7 @@
   tasks:
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
+      delegate_to: localhost  # Run only once on the control node
       command: ping -c 2 "{{ TrueNAS_IP }}"
       ignore_unreachable: true
       ignore_errors: yes
