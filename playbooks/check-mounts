@@ -11,10 +11,6 @@
     #proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
     #your_proxmox_username: "sshuser"
     #your_proxmox_host: "10.10.1.10"
-  handlers:
-    - name: RebootTrueNAS
-      debug:
-        msg: "TrueNAS is Dead"
   tasks:
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
@@ -31,3 +27,7 @@
         msg: "oopa it ded"
       notify: RebootTrueNAS
       when: router_ping.rc == 1 or router_ping.rc > 2
+  handlers:
+    - name: RebootTrueNAS
+      debug:
+        msg: "TrueNAS is Dead"
