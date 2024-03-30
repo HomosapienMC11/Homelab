@@ -2,7 +2,7 @@
 - name: Ping VMs and Restart if Unreachable
   hosts: all
   gather_facts: no
-  #become: false
+  become: false
   vars:
     proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
     your_proxmox_username: "sshuser"
@@ -10,8 +10,8 @@
 
   tasks:
     - name: test sudo
-      #become: true
-      #become_user: sshuser
+      become: true
+      become_method: sudo
       shell: |
         sudo lxc-start -n 102
       when: inventory_hostname in groups['proxmox']
