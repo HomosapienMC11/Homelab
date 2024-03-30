@@ -29,10 +29,11 @@
 
     - name: Gather failed LXC hosts
       set_fact:
-        failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[item].vm_id] }}"
+        failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[inventory_hostname].vm_id] }}"
         a_failed_lxcs: true
       loop: "{{ ansible_play_hosts_all }}"
-      when: ping_result_lxcs[item].rc != 0 and item in groups['lxc']
+      when: ping_result_lxcs[inventory_hostname].rc != 0 and inventory_hostname in groups['lxc']
+
 
 
 
