@@ -27,5 +27,7 @@
       register: router_ping
     
     - name: Fix TrueNAS if Ded
+      set_fact:
+        TrueNAS_Dead: true
       notify: RebootTrueNAS
       when: router_ping.rc == 1 or router_ping.rc > 2
