@@ -30,5 +30,5 @@
       debug:
         msg: "oopa it ded"
       notify: RebootTrueNAS
-      changed_when: true
+      changed_when: true #handler only works if marked changed
       when: router_ping.rc == 1 or router_ping.rc > 2
