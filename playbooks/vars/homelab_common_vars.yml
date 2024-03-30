@@ -1,0 +1,7 @@
+# File: /homelab/playbooks/vars/common_vars.yml
+---
+proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
+your_proxmox_username: "sshuser"
+your_proxmox_host: "10.10.1.10"
+TrueNAS_IP: "10.10.1.90"
+TrueNAS_ID: "111"

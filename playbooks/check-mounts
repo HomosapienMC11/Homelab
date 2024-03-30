@@ -1,0 +1,36 @@
+---
+- name: Check for the SMB Share being mounted on Applicable VMs/LXCs
+  hosts: SMB
+  gather_facts: no
+  become: false
+  vars_files:
+    - vars/homelab_common_vars.yml
+  vars:
+    needs_mounting: false
+    TrueNAS_Dead: false
+    #proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
+    #your_proxmox_username: "sshuser"
+    #your_proxmox_host: "10.10.1.10"
+  handlers:
+    - name: RebootTrueNAS
+      debug:
+        msg: "TrueNAS is Dead"
+  tasks:
+  #Check if TrueNAS is Running---------------------------------------------------------------------------------------
+    - name: ICMP ping from Control Node to Remote Node
+      delegate_to: localhost
+      become: true
+      become_method: sudo
+      command: ping -c 2 "{{ TrueNAS_IP }}"
+      ignore_unreachable: true
+      ignore_errors: yes
+      changed_when: false 
+      check_mode: false
+      register: router_ping
+    
+    - name: Fix TrueNAS if Ded
+      set_fact:
+        TrueNAS_Dead: true
+      #command: true
+      notify: RebootTrueNAS
+      when: router_ping.rc == 1 or router_ping.rc > 2
