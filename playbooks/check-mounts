@@ -24,6 +24,8 @@
       register: router_ping
     
     - name: Fix TrueNAS if Ded
+      run_once: true
+      delegate_to: localhost  # Run only once on the control node
       debug:
         msg: "oopa it ded"
       notify: RebootTrueNAS
