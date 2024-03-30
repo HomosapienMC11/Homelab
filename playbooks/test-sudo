@@ -13,4 +13,4 @@
       become: true
       become_user: sshuser
       shell: |
-        sudo crontab -e
+        sudo lxc-start -n 102
