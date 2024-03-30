@@ -29,7 +29,7 @@
 
     - name: Gather failed LXC hosts
       set_fact:
-        failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[item].vm_id] }}"
+        failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars.vm_id] }}"
         a_failed_lxcs: true
       when: ping_result_lxcs.rc != 0
 
