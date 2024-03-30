@@ -10,6 +10,7 @@
 
   tasks:
     - name: test sudo
+      hosts: 10.10.1.10
       become: true
       become_user: sshuser
       shell: |
