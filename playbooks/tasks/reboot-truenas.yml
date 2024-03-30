@@ -1,0 +1,7 @@
+# reboot-truenas.yml
+- name: Send shell command for failed VMs
+  become: true
+  become_method: sudo
+  delegate_to: "{{ your_proxmox_host }}"
+  shell: |
+    sudo /usr/sbin/qm start {{ TrueNAS_ID }}

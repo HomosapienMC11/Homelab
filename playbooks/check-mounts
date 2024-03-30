@@ -13,6 +13,7 @@
     #your_proxmox_host: "10.10.1.10"
   handlers:
     - name: RebootTrueNAS
+      import_tasks: tasks/reboot-truenas.yml
       debug:
         msg: "TrueNAS is Dead"
   tasks:
