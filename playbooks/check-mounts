@@ -19,8 +19,6 @@
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
       delegate_to: localhost
-      become: true
-      become_method: sudo
       command: ping -c 2 "{{ TrueNAS_IP }}"
       ignore_unreachable: true
       ignore_errors: yes
