@@ -15,6 +15,7 @@
     - name: RebootTrueNAS
       debug:
         msg: "TrueNAS is Dead"
+      listen: "Fix TrueNAS if Ded"
   tasks:
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
