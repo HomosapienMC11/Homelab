@@ -3,7 +3,7 @@
   hosts: vm
   ignore_unreachable: true
   gather_facts: no
-  become: yes
+  become: false
   vars:
     a_failed_lxcs: false
     a_failed_vms: false
@@ -14,11 +14,12 @@
 
 #VMs---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
-      delegate_to: localhost # or controlnode.example.com
+      delegate_to: localhost
+      become: true
+      become_method: sudo
       command: ping -c 2 "{{ ansible_host }}"
       ignore_unreachable: true
       ignore_errors: yes
-      # Because it is an reporting task
       changed_when: false 
       check_mode: false
       failed_when: router_ping.rc == 1 or router_ping.rc > 2 # will result into success for rc 0 and rc 2
@@ -41,7 +42,7 @@
 
     - name: Send shell command for failed VMs
       become: true
-      become_user: sshuser
+      become_method: sudo
       delegate_to: "{{ your_proxmox_host }}"
       shell: |
         sudo /usr/sbin/qm start {{ item }}
