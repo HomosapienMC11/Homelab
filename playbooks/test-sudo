@@ -10,8 +10,8 @@
 
   tasks:
     - name: test sudo
-      hosts: proxmox
       become: true
       become_user: sshuser
       shell: |
         sudo lxc-start -n 102
+      when: inventory_hostname in groups['proxmox']
