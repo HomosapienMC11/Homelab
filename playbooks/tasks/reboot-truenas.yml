@@ -8,31 +8,13 @@
   delegate_to: "{{ your_proxmox_host }}"
   shell: |
     sudo /usr/sbin/qm start {{ TrueNAS_ID }}
-  when: false
+  #when: false
 
 - debug:
     msg: "rebooted TN"
 
 - debug:
     msg: "Pinging Until Ready TN"
-
-- name: Wait for TrueNAS to become reachable
-  delegate_to: localhost
-  run_once: true
-  block:
-    - name: ICMP ping from Control Node to Remote Node
-      command: ping -c 2 "{{ TrueNAS_IP }}"
-      ignore_unreachable: true
-      ignore_errors: yes
-      changed_when: false 
-      check_mode: false
-      register: router_ping
-    - name: Check if TrueNAS is running
-      set_fact:
-        truenas_reachable: "{{ router_ping.rc == 0 }}"
-  until: truenas_reachable
-  retries: 10
-  delay: 10
 
 - debug:
     msg: "Success! Waiting 20sec"

@@ -22,7 +22,7 @@
       changed_when: false 
       check_mode: false
       register: router_ping
-      when: false
+      #when: false
     
     - name: Fix TrueNAS if Ded
       run_once: true
@@ -31,5 +31,5 @@
         msg: "oopa it ded"
       notify: RebootTrueNAS
       changed_when: true #handler only works if marked changed
-      when: true
-      #when: router_ping.rc == 1 or router_ping.rc > 2
+      #when: true
+      when: router_ping.rc == 1 or router_ping.rc > 2
