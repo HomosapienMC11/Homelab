@@ -10,6 +10,7 @@
 - name: Execute mount -a command with sudo on all hosts in the group
   become: true
   become_method: sudo
+  delegate_to: "{{ ansible_host }}"
   ansible.builtin.shell: sudo mount -a
   loop: "{{ groups['SMB'] }}"
   loop_control:
