@@ -23,16 +23,17 @@
       ignore_unreachable: true
       #when: inventory_hostname in groups['lxc']
 
-    - name: Debug failed VMs
-      debug:
-        var: ping_result_lxcs
+    #- name: Debug failed VMs
+    #  debug:
+    #    var: ping_result_lxcs
 
     - name: Gather failed LXC hosts
       set_fact:
         failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[item].vm_id] }}"
         a_failed_lxcs: true
-      when: ping_result_lxcs is defined and ping_result_lxcs.unreachable
-      with_items: "{{ groups['lxc'] }}"
+      loop: "{{ ping_result_lxcs.results }}"
+      when: item.rc != 0
+
 
     - name: Display failed LXC hosts
       debug:
