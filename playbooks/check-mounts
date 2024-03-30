@@ -14,8 +14,8 @@
   handlers:
     - name: RebootTrueNAS
       import_tasks: tasks/reboot-truenas.yml
-      debug:
-        msg: "TrueNAS is Dead"
+      #debug:
+      #  msg: "TrueNAS is Dead"
   tasks:
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
