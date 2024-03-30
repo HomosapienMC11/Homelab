@@ -21,6 +21,7 @@
       changed_when: false 
       check_mode: false
       register: router_ping
+      when: ansible_hostname == localhost
     
     - name: Fix TrueNAS if Ded
       debug:
