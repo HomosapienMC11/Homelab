@@ -14,6 +14,7 @@
   handlers:
     - name: RebootTrueNAS
       import_tasks: tasks/reboot-truenas.yml
+      static: yes
   tasks:
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
