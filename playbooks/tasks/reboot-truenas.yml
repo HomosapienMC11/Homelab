@@ -5,7 +5,7 @@
   delegate_to: "{{ your_proxmox_host }}"
   shell: |
     sudo /usr/sbin/qm start {{ TrueNAS_ID }}
-  when: ansible_hostname == {{ your_proxmox_host }}
+  when: inventory_hostname  == {{ your_proxmox_host }}
 
 - name: Execute mount -a command with sudo on all hosts in the group
   become: true
