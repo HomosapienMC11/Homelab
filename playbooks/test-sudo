@@ -1,6 +1,6 @@
 ---
 - name: Ping VMs and Restart if Unreachable
-  hosts: lxc
+  hosts: all
   gather_facts: no
   become: false
   vars:
