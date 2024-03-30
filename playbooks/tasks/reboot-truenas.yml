@@ -8,6 +8,28 @@
     sudo /usr/sbin/qm start {{ TrueNAS_ID }}
   #when: false
 
+- name: Wait for TrueNAS to become reachable
+  delegate_to: localhost
+  run_once: true
+  block:
+    - name: ICMP ping from Control Node to Remote Node
+      command: ping -c 2 "{{ TrueNAS_IP }}"
+      ignore_unreachable: true
+      ignore_errors: yes
+      changed_when: false 
+      check_mode: false
+      register: router_ping
+    - name: Check if TrueNAS is running
+      set_fact:
+        truenas_reachable: "{{ router_ping.rc == 0 }}"
+  until: truenas_reachable
+  retries: 10
+  delay: 10
+
+- name: Pause to allow time for TrueNAS to boot
+  pause:
+    seconds: 20  # Adjust the value as needed to wait for TrueNAS to boot (e.g., 5 minutes)
+
 - name: Execute mount -a command with sudo on all hosts in the group
   become: true
   become_method: sudo
