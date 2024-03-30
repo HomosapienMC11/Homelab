@@ -9,9 +9,8 @@
     your_proxmox_host: "10.10.1.10"
 
   tasks:
-    - name: Send shell command for failed VMs
-      delegate_to: localhost
+    - name: test sudo
       become: true
       become_user: sshuser
       shell: |
-        ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo crontab -e
+        sudo crontab -e
