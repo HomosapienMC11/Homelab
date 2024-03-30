@@ -44,6 +44,6 @@
       become_user: sshuser
       delegate_to: "{{ your_proxmox_host }}"
       shell: |
-        sudo lxc-start -n {{ item }}
+        sudo /usr/sbin/qm start {{ item }}
       loop: "{{ failed_vms }}"
       when: a_failed_vms
