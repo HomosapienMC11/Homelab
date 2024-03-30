@@ -27,6 +27,13 @@
     - name: Show Return Code
       debug:
         msg: "{{ router_ping.rc }}"
+    
+    - name: Gather failed VM hosts
+      set_fact:
+        failed_vms: "{{ failed_vms | default([]) + [ansible_host] }}"
+        a_failed_vms: true
+      when: router_ping.rc == 1 or router_ping.rc > 2
+
 
     #- name: Send shell command for failed VMs
     #  become: true
@@ -35,4 +42,4 @@
     #  shell: |
     #    sudo lxc-start -n {{ item }}
     #  loop: "{{ failed_lxcs }}"
-    #  when: failed_lxcs | length > 0
+    #  when: a_failed_lxcs
