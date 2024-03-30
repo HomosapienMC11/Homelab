@@ -39,11 +39,11 @@
         msg: "Failed LXC hosts: {{ failed_lxcs }}"
       when: a_failed_lxcs
 
-    #- name: Send shell command for failed VMs
-    #  become: true
-    #  become_user: sshuser
-    #  delegate_to: "{{ your_proxmox_host }}"
-    #  shell: |
-    #    sudo lxc-start -n {{ item }}
-    #  loop: "{{ failed_lxcs }}"
-    #  when: a_failed_lxcs
+    - name: Send shell command for failed VMs
+      become: true
+      become_user: sshuser
+      delegate_to: "{{ your_proxmox_host }}"
+      shell: |
+        sudo lxc-start -n {{ item }}
+      loop: "{{ failed_lxcs }}"
+      when: a_failed_lxcs
