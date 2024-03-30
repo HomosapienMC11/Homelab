@@ -13,25 +13,26 @@
   tasks:
 
 #VMs---------------------------------------------------------------------------------------
-    - name: Ping VMs in vm
-      command: "ping -c 1 {{ ansible_host }}"  # Sends 1 ping packet to each host
-      delegate_to: localhost
-      register: ping_result_vms
-      changed_when: false
-      ignore_errors: yes
+    - name: ICMP ping from Control Node to Remote Node
+      delegate_to: localhost # or controlnode.example.com
+      command: ping -c 2 "{{ ansible_host }}"
       ignore_unreachable: true
-      #when: inventory_hostname in groups['vm']
+      ignore_errors: yes
+      # Because it is an reporting task
+      changed_when: false 
+      check_mode: false
+      failed_when: router_ping.rc == 1 or router_ping.rc > 2 # will result into success for rc 0 and rc 2
+      register: router_ping
 
-    #- name: Debug failed VMs
-    #  debug:
-    #    var: ping_result_vms
-
+    - name: Show Return Code
+      debug:
+        msg: "{{ router_ping.rc }}"
+    
     - name: Gather failed VM hosts
       set_fact:
-        failed_vms: "{{ failed_vms | default([]) + [hostvars[item].vm_id] }}"
+        failed_vms: "{{ failed_vms | default([]) + [hostvars[inventory_hostname].vm_id] }}"
         a_failed_vms: true
-      when: ping_result_vms.rc != 0
-      with_items: "{{ groups['vm'] }}"
+      when: router_ping.rc == 1 or router_ping.rc > 2
 
     - name: Display failed VM hosts
       debug:
@@ -39,8 +40,10 @@
       when: a_failed_vms
 
     - name: Send shell command for failed VMs
-      delegate_to: localhost
+      become: true
+      become_user: sshuser
+      delegate_to: "{{ your_proxmox_host }}"
       shell: |
-        ssh -i "{{ proxmox_ssh_key }}" {{ your_proxmox_username }}@{{ your_proxmox_host }} -t sudo /usr/sbin/qm start {{ item }}
+        sudo lxc-start -n {{ item }}
       loop: "{{ failed_vms }}"
       when: a_failed_vms
