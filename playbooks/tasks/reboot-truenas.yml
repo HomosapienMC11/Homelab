@@ -13,4 +13,4 @@
   ansible.builtin.shell: sudo mount -a
   loop: "{{ groups['SMB'] }}"
   loop_control:
-        label: "{{ item }}"
+        label: "{{ ansible_host }}"
