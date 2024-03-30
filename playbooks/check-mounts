@@ -15,7 +15,6 @@
     - name: RebootTrueNAS
       debug:
         msg: "TrueNAS is Dead"
-      listen: "Fix TrueNAS if Ded"
   tasks:
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
@@ -31,4 +30,5 @@
       debug:
         msg: "oopa it ded"
       notify: RebootTrueNAS
+      changed_when: true
       when: router_ping.rc == 1 or router_ping.rc > 2
