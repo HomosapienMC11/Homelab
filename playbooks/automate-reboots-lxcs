@@ -37,7 +37,7 @@
     - name: Display failed LXC hosts
       debug:
         msg: "Failed LXC hosts: {{ failed_lxcs }}"
-      when: a_failed_lxcs | length > 0
+      when: failed_lxcs | length > 0
 
     #- name: Send shell command for failed VMs
     #  become: true
@@ -46,4 +46,4 @@
     #  shell: |
     #    sudo lxc-start -n {{ item }}
     #  loop: "{{ failed_lxcs }}"
-    #  when: a_failed_lxcs | length > 0
+    #  when: failed_lxcs | length > 0
