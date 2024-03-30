@@ -13,34 +13,18 @@
   tasks:
 
     #LXCs---------------------------------------------------------------------------------------
-    - name: Ping VMs in lxc
-      command: "ping -c 1 {{ ansible_host }}"  # Sends 1 ping packet to each host
-      delegate_to: localhost
-      register: ping_result_lxcs
-      changed_when: false
-      failed_when: ping_result_lxcs.rc != 0
-      ignore_errors: yes
-      ignore_unreachable: true
-      #when: inventory_hostname in groups['lxc']
+    - name: ICMP ping from Control Node to Remote Node
+      delegate_to: localhost # or controlnode.example.com
+      command: ping -c 2 "{{ inventory_hostname }}"
+      # Because it is an reporting task
+      changed_when: false 
+      check_mode: false
+      failed_when: router_ping.rc == 1 or router_ping.rc > 2 # will result into success for rc 0 and rc 2
+      register: router_ping
 
-    - name: Debug failed VMs
+    - name: Show Return Code
       debug:
-        var: ping_result_lxcs
-
-    - name: Gather failed LXC hosts
-      set_fact:
-        failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[inventory_hostname].vm_id] }}"
-        a_failed_lxcs: true
-      loop: "{{ ansible_play_hosts_all }}"
-      when: ping_result_lxcs[inventory_hostname].rc != 0 and inventory_hostname in groups['lxc']
-
-
-
-
-    - name: Display failed LXC hosts
-      debug:
-        msg: "Failed LXC hosts: {{ failed_lxcs }}"
-      when: failed_lxcs | length > 0
+        msg: "{{ router_ping.rc }}"
 
     #- name: Send shell command for failed VMs
     #  become: true
