@@ -19,6 +19,14 @@
 - name: Wait for TrueNAS to become reachable
   delegate_to: localhost
   run_once: true
+  vars:
+    max_retries: 10
+    delay_seconds: 10
+  retries: "{{ max_retries }}"
+  delay: "{{ delay_seconds }}"
+  until: truenas_reachable | default(false)
+  loop_control:
+    loop_var: retry_counter
   block:
     - name: ICMP ping from Control Node to Remote Node
       command: ping -c 2 "{{ TrueNAS_IP }}"
@@ -27,12 +35,11 @@
       changed_when: false 
       check_mode: false
       register: router_ping
+
     - name: Check if TrueNAS is running
       set_fact:
         truenas_reachable: "{{ router_ping.rc == 0 }}"
-  until: truenas_reachable
-  retries: 10
-  delay: 10
+      when: truenas_reachable | default(false)
 
 - debug:
     msg: "Success! Waiting 20sec"
