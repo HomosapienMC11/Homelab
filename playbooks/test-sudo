@@ -10,7 +10,7 @@
 
   tasks:
     - name: test sudo
-      hosts: 10.10.1.10
+      hosts: proxmox
       become: true
       become_user: sshuser
       shell: |
