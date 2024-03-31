@@ -17,7 +17,7 @@
     delegate_to: "{{ your_proxmox_host }}"
     shell: |
       sudo /usr/sbin/qm start {{ ID_TrueNAS }}
-    #when: false
+    when: false
 
   - debug:
       msg: "rebooted TN"
@@ -40,6 +40,7 @@
     until: tempping.rc == 0
     retries: 30
     delay: 4
+    when: false
 
   - debug:
       msg: "Success! Waiting 20sec"
@@ -59,6 +60,7 @@
     become: true
     become_method: sudo
     ansible.builtin.shell: sudo mount -a
+    when: false
   
   - name: Restart ZM #fix ZM by rebooting since it gets stuck if TN is dead
     become: true
@@ -67,3 +69,4 @@
     delegate_to: "{{ your_proxmox_host }}"
     shell: |
       sudo /usr/sbin/pct reboot {{ ID_Zoneminder }}
+    when: false
