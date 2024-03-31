@@ -8,10 +8,10 @@
   vars:
     needs_mounting: false
     TrueNAS_Dead: false
-  handlers:
-    - name: RebootTrueNAS
+  #handlers:
+  #  - name: RebootTrueNAS
       #include_tasks: tasks/reboot-truenas.yml
-      import_playbook: reboot-truenas
+      #import_playbook: reboot-truenas
   tasks:
   #Check if TrueNAS is Running---------------------------------------------------------------------------------------
     - name: ICMP ping from Control Node to Remote Node
