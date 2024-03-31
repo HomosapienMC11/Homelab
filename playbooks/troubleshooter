@@ -46,4 +46,4 @@
 - name: Fix TrueNAS if Ded
   run_once: true
   import_playbook: reboot-truenas
-  when: TrueNAS_Dead
+  when: TrueNAS_Dead | default(false)
