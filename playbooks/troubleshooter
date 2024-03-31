@@ -27,10 +27,10 @@
       when: router_ping.rc == 1 or router_ping.rc > 2
 
     - name: Check if SMB share is mounted
-      mount:
+      stat:
         path: /mnt/SASma
-        state: mounted
       register: smb_mount_check
+
     - set_fact:
         needs_mounting: true
       when: smb_mount_check.stat.exists == false
