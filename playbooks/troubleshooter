@@ -15,6 +15,7 @@
       command: ping -c 2 "{{ item }}"
       ignore_unreachable: true
       ignore_errors: yes
+      changed_when: ping_results.rc != 0
       loop:
         - "{{ IP_IDRAC }}"
         - "{{ your_proxmox_host }}"
