@@ -50,7 +50,7 @@
 
     - set_fact:
         needs_mounting: true
-      run_once: true
+      #run_once: true
       when: smb_mount_check.rc == 1
 
 # Execute mount -a command with sudo when host belongs to SMB or ZM group
