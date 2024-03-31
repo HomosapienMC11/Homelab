@@ -1,4 +1,5 @@
 ---
+#Check for TrueNAS----------------------------------------------------------------------------------------------------
 - name: Check for the SMB Share being mounted on Applicable VMs/LXCs
   hosts: all
   gather_facts: no
@@ -9,7 +10,7 @@
     needs_mounting: false
     TrueNAS_Dead: false
   tasks:
-  #Check if TrueNAS is Running---------------------------------------------------------------------------------------
+  #Check if TrueNAS is Running
     - name: ICMP ping from Control Node to Remote Node
       run_once: true
       delegate_to: localhost  # Run only once on the control node
@@ -33,7 +34,8 @@
   import_playbook: reboot-truenas
   when: TrueNAS_Dead | default(false)
 
-- name: Continue with the playbook tasks
+#Check for Mounts on Bellow Groups----------------------------------------------------------------------------------------------
+- name: Mount Checks
   hosts: SMB:ZM
   gather_facts: no
   become: false
