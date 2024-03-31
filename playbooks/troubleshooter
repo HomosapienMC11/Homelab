@@ -33,7 +33,7 @@
   when: TrueNAS_Dead | default(false)
 
 - name: Continue with the playbook tasks
-  hosts: all
+  hosts: SMB:ZM
   gather_facts: no
   become: false
   vars_files:
@@ -55,4 +55,4 @@
       become: true
       become_method: sudo
       ansible.builtin.shell: sudo mount -a
-      when: needs_mounting and (inventory_hostname in groups['SMB'] or inventory_hostname in groups['ZM'] )
+      when: needs_mounting #and (inventory_hostname in groups['SMB'] or inventory_hostname in groups['ZM'] )
