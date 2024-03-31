@@ -13,7 +13,7 @@
     - name: ICMP ping from Control Node to Remote Node
       run_once: true
       delegate_to: localhost  # Run only once on the control node
-      command: ping -c 2 "{{ TrueNAS_IP }}"
+      command: ping -c 2 "{{ IP_TrueNAS }}"
       ignore_unreachable: true
       ignore_errors: yes
       changed_when: false 
