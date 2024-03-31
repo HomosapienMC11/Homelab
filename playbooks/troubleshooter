@@ -43,8 +43,9 @@
     needs_mounting: false
   tasks:
     - name: Check if SMB share is mounted
-      stat:
+      ansible.builtin.mount:
         path: /mnt/SASma
+        state: mounted
       register: smb_mount_check
 
     - set_fact:
