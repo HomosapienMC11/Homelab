@@ -1,6 +1,6 @@
 ---
 - name: Check for the SMB Share being mounted on Applicable VMs/LXCs
-  hosts: SMB
+  hosts: all
   gather_facts: no
   become: false
   vars_files:
@@ -20,10 +20,30 @@
       check_mode: false
       register: router_ping
       #when: false
+  
+    - name: TN is ded
+      set_fact:
+        TrueNAS_Dead: true
+      when: router_ping.rc == 1 or router_ping.rc > 2
+
+    - name: Check if SMB share is mounted
+      mount:
+        path: /mnt/SASma
+        state: mounted
+      register: smb_mount_check
+    - set_fact:
+        needs_mounting: true
+      when: smb_mount_check.stat.exists == false
     
+    # Execute mount -a command with sudo when host belongs to SMB or ZM group
+    - name: Mount Em
+      become: true
+      become_method: sudo
+      ansible.builtin.shell: sudo mount -a
+      when: inventory_hostname in groups['SMB'] or inventory_hostname in groups['ZM']
+
+#conditional playbook runs
 - name: Fix TrueNAS if Ded
   run_once: true
-  #delegate_to: localhost  # Run only once on the control node
   import_playbook: reboot-truenas
-  #when: true
-  when: router_ping.rc == 1 or router_ping.rc > 2
+  when: TrueNAS_Dead

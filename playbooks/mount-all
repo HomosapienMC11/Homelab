@@ -1,0 +1,16 @@
+---
+- name: Reboot TN
+  hosts: SMB
+  gather_facts: no
+  become: false
+  vars_files:
+    - vars/homelab_common_vars.yml
+  tasks:
+    - debug:
+        msg: "Success! Mounting All"
+      run_once: true
+
+    - name: Execute mount -a command with sudo on all hosts in the group
+      become: true
+      become_method: sudo
+      ansible.builtin.shell: sudo mount -a
