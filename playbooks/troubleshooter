@@ -19,6 +19,7 @@
       changed_when: false 
       check_mode: false
       register: ping_IDRAC
+      failed_when: true #ping_IDRAC.rc == 1 or ping_IDRAC.rc > 2
     - debug:
         msg: "Server / IDRAC is offline!!"
       run_once: true
