@@ -2,38 +2,35 @@
 #the dron timing: */10 * * * *
 #Check Proxmox if Its Running-------------------------------------------------------------------------------------------
 - name: Ping Main IPs
-  hosts: control_node
+  hosts: localhost
   gather_facts: no
   become: false
   vars_files:
     - vars/homelab_common_vars.yml
-
-  vars:
-    fix_proxmox: false
   #Initial Pings
   tasks:
     #ping IDRAC
     - name: ICMP ping of IDRAC
-      delegate_to: localhost
-      command: ping -c 2 "{{ IP_IDRAC }}"
-      changed_when: false 
       check_mode: false
-      register: ping_IDRAC
-      failed_when: ping_IDRAC.rc == 1 or ping_IDRAC.rc > 2
-    - debug:
-        msg: "Server / IDRAC is offline!!"
-      run_once: true
-      when: ping_IDRAC.rc == 1 or ping_IDRAC.rc > 2
-    #Ping Proxmox
-    - name: ICMP ping of Proxmox
-      delegate_to: localhost
-      command: ping -c 2 "{{ your_proxmox_host }}"
-      changed_when: false 
-      check_mode: false
-      register: ping_Proxmox
+      command: ping -c 2 "{{ item }}"
+      ignore_unreachable: true
+      ignore_errors: yes
+      loop:
+        - "{{ IP_IDRAC }}"
+        - "{{ your_proxmox_host }}"
+        - "{{ IP_TrueNAS }}"
+      register: ping_results
+    #set facts
+    - set_fact:
+        fix_IDRAC: true
+      when: ping_results.results[0].rc != 0
     - set_fact:
         fix_proxmox: true
-      when: ping_Proxmox.rc == 1 or ping_Proxmox.rc > 2
+      when: ping_results.results[1].rc != 0
+    - set_fact:
+        fix_TrueNAS: true
+      when: ping_results.results[2].rc != 0
+
 #Fix Proxmox
 - name: Fix Server #send commands via IDRAC
   run_once: true
@@ -51,38 +48,12 @@
   import_playbook: automate-reboots-lxcs
 
 #Check for TrueNAS----------------------------------------------------------------------------------------------------
-- name: Check for the SMB Share being mounted on Applicable VMs/LXCs
-  hosts: all
-  gather_facts: no
-  become: false
-  vars_files:
-    - vars/homelab_common_vars.yml
-  vars:
-    needs_mounting: false
-    TrueNAS_Dead: false
-  tasks:
-  #Check if TrueNAS is Running
-    - name: ICMP ping to TrueNAS
-      #run_once: true
-      delegate_to: localhost  # Run only once on the control node
-      command: ping -c 2 "{{ IP_TrueNAS }}"
-      ignore_unreachable: true
-      ignore_errors: yes
-      changed_when: false 
-      check_mode: false
-      register: router_ping
-  
-    - name: is TN ded
-      set_fact:
-        TrueNAS_Dead: true
-      run_once: true
-      when: router_ping.rc == 1 or router_ping.rc > 2
 
 #conditional playbook runs to fix TN
 - name: Fix TrueNAS if Ded
   run_once: true
   import_playbook: reboot-truenas
-  when: TrueNAS_Dead | default(false)
+  when: fix_TrueNAS | default(false)
 
 #Check for Mounts on Bellow Groups----------------------------------------------------------------------------------------------
 - name: Mount Checks
