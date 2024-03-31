@@ -17,7 +17,7 @@
     run_once: true
     delegate_to: "{{ your_proxmox_host }}"
     shell: |
-      sudo /usr/sbin/qm start {{ TrueNAS_ID }}
+      sudo /usr/sbin/qm start {{ ID_TrueNAS }}
     #when: false
 
   - debug:
@@ -32,7 +32,7 @@
   - name: Wait for TrueNAS to become reachable
     delegate_to: localhost
     run_once: true
-    command: ping -c 2 "{{ TrueNAS_IP }}"
+    command: ping -c 2 "{{ IP_TrueNAS }}"
     ignore_unreachable: true
     ignore_errors: yes
     changed_when: false 
@@ -60,7 +60,11 @@
     become: true
     become_method: sudo
     ansible.builtin.shell: sudo mount -a
-    #delegate_to: "{{ item }}"
-    #loop: "{{ groups['SMB'] }}"
-    #loop_control:
-    #      label: "{{ item }}"
+  
+  - name: Restart ZM #fix ZM by rebooting since it gets stuck if TN is dead
+    become: true
+    become_method: sudo
+    run_once: true
+    delegate_to: "{{ your_proxmox_host }}"
+    shell: |
+      sudo /usr/sbin/qm start {{ ID_Zoneminder }}
