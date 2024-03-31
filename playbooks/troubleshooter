@@ -26,7 +26,7 @@
         TrueNAS_Dead: true
       when: router_ping.rc == 1 or router_ping.rc > 2
 
-#conditional playbook runs
+#conditional playbook runs to fix TN
 - name: Fix TrueNAS if Ded
   run_once: true
   import_playbook: reboot-truenas
@@ -49,10 +49,9 @@
     - set_fact:
         needs_mounting: true
       when: smb_mount_check.stat.exists == false
-    
-    # Execute mount -a command with sudo when host belongs to SMB or ZM group
-    - name: Mount Em
-      become: true
-      become_method: sudo
-      ansible.builtin.shell: sudo mount -a
-      when: needs_mounting #and (inventory_hostname in groups['SMB'] or inventory_hostname in groups['ZM'] )
+
+# Execute mount -a command with sudo when host belongs to SMB or ZM group
+- name: Fix TrueNAS if Ded
+  run_once: true
+  import_playbook: mount-all
+  when: needs_mounting | default(false)
