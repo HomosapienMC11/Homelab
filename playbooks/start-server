@@ -6,6 +6,6 @@
   vars_files:
     - vars/homelab_common_vars.yml
   tasks:
-  - debug:
-      msg: "Start le Server VIA IDRAC"
-    run_once: true
+  #- debug:
+  #    msg: "Start le Server VIA IDRAC"
+  #  run_once: true
