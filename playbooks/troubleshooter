@@ -11,7 +11,7 @@
   tasks:
     #ping IDRAC
     - name: ICMP ping of IDRAC
-      #check_mode: false
+      check_mode: false
       command: ping -c 2 "{{ item }}"
       ignore_unreachable: true
       ignore_errors: yes
