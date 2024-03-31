@@ -27,11 +27,9 @@
       when: router_ping.rc == 1 or router_ping.rc > 2
 
 #conditional playbook runs
-#- name: Fix TrueNAS if Ded
-- debug:
-      msg: "Run Playbook:"
+- name: Fix TrueNAS if Ded
   run_once: true
-  #import_playbook: reboot-truenas
+  import_playbook: reboot-truenas
   when: TrueNAS_Dead | default(false)
 
 - name: Continue with the playbook tasks
