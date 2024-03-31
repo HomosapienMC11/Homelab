@@ -6,9 +6,9 @@
   vars_files:
     - vars/homelab_common_vars.yml
   tasks:
-  - debug:
-      msg: "Booting TN"
-    run_once: true
+  #- debug:
+  #    msg: "Booting TN"
+  #  run_once: true
 
   - name: Boot TN
     become: true
@@ -19,13 +19,13 @@
       sudo /usr/sbin/qm start {{ ID_TrueNAS }}
     when: false
 
-  - debug:
-      msg: "rebooted TN"
-    run_once: true
+  #- debug:
+  #    msg: "rebooted TN"
+  #  run_once: true
 
-  - debug:
-      msg: "Pinging Until Ready TN"
-    run_once: true
+  #- debug:
+  #    msg: "Pinging Until Ready TN"
+  #  run_once: true
 
   #loop pinging until success then continue
   - name: Wait for TrueNAS to become reachable
@@ -42,9 +42,9 @@
     delay: 4
     when: false
 
-  - debug:
-      msg: "Success! Waiting 20sec"
-    run_once: true
+  #- debug:
+  #    msg: "Success! Waiting 20sec"
+  #  run_once: true
 
   - name: Pause to allow time for TrueNAS to boot
     pause:
@@ -52,9 +52,9 @@
     run_once: true
     delegate_to: localhost
 
-  - debug:
-      msg: "Success! Mounting All"
-    run_once: true
+  #- debug:
+  #    msg: "Success! Mounting All"
+  #  run_once: true
 
   - name: Execute mount -a command with sudo on all hosts in the group
     become: true

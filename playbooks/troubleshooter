@@ -62,7 +62,7 @@
     TrueNAS_Dead: false
   tasks:
   #Check if TrueNAS is Running
-    - name: ICMP ping from Control Node to Remote Node
+    - name: ICMP ping to TrueNAS
       run_once: true
       delegate_to: localhost  # Run only once on the control node
       command: ping -c 2 "{{ IP_TrueNAS }}"
@@ -73,7 +73,7 @@
       register: router_ping
       #when: false
   
-    - name: TN is ded
+    - name: is TN ded
       set_fact:
         TrueNAS_Dead: true
       run_once: true
