@@ -15,8 +15,8 @@
       command: ping -c 2 "{{ item }}"
       ignore_unreachable: true
       ignore_errors: yes
-      changed_when: ping_results.results.rc != 0
-      failed_when: ping_results.results[0].rc != 0
+      changed_when: ping_results.rc != 0
+      failed_when: ping_results.[0].rc != 0
       loop:
         - "{{ IP_IDRAC }}"
         - "{{ your_proxmox_host }}"
@@ -25,13 +25,13 @@
     #set facts
     - set_fact:
         fix_IDRAC: true
-      when: ping_results.results[0].rc != 0
+      when: ping_results[0].rc != 0
     - set_fact:
         fix_proxmox: true
-      when: ping_results.results[1].rc != 0
+      when: ping_results[1].rc != 0
     - set_fact:
         fix_TrueNAS: true
-      when: ping_results.results[2].rc != 0
+      when: ping_results[2].rc != 0
 
 #Fix Proxmox
 - name: Fix Server #send commands via IDRAC
