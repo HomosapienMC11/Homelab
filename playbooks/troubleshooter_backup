@@ -14,6 +14,7 @@
   tasks:
     #ping IDRAC
     - name: ICMP ping of IDRAC
+      run_once: true
       delegate_to: localhost
       command: ping -c 2 "{{ IP_IDRAC }}"
       changed_when: false 
@@ -26,6 +27,7 @@
       when: ping_IDRAC.rc == 1 or ping_IDRAC.rc > 2
     #Ping Proxmox
     - name: ICMP ping of Proxmox
+      run_once: true
       delegate_to: localhost
       command: ping -c 2 "{{ your_proxmox_host }}"
       changed_when: false 
@@ -63,7 +65,7 @@
   tasks:
   #Check if TrueNAS is Running
     - name: ICMP ping to TrueNAS
-      #run_once: true
+      run_once: true
       delegate_to: localhost  # Run only once on the control node
       command: ping -c 2 "{{ IP_TrueNAS }}"
       ignore_unreachable: true
@@ -71,6 +73,7 @@
       changed_when: false 
       check_mode: false
       register: router_ping
+      #when: false
   
     - name: is TN ded
       set_fact:
