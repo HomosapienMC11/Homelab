@@ -40,7 +40,7 @@
       become: true
       become_method: sudo
       ansible.builtin.shell: sudo mount -a
-      when: inventory_hostname in groups['SMB'] or inventory_hostname in groups['ZM']
+      when: needs_mounting and (inventory_hostname in groups['SMB'] or inventory_hostname in groups['ZM'] )
 
 #conditional playbook runs
 - name: Fix TrueNAS if Ded
