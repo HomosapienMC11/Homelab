@@ -2,16 +2,19 @@
 #the dron timing: */10 * * * *
 #Check Proxmox if Its Running-------------------------------------------------------------------------------------------
 - name: Ping Main IPs
-  hosts: all
+  hosts: control_node
   gather_facts: no
   become: false
   vars_files:
     - vars/homelab_common_vars.yml
+  vars:
+    fix_proxmox: false
   #Initial Pings
   tasks:
+    #ping IDRAC
     - name: ICMP ping of IDRAC
       run_once: true
-      delegate_to: localhost  # Run only once on the control node
+      delegate_to: localhost
       command: ping -c 2 "{{ IP_IDRAC }}"
       changed_when: false 
       check_mode: false
@@ -20,6 +23,29 @@
         msg: "Server / IDRAC is offline!!"
       run_once: true
       when: ping_IDRAC.rc == 1 or ping_IDRAC.rc > 2
+    #Ping Proxmox
+    - name: ICMP ping of Proxmox
+      run_once: true
+      delegate_to: localhost
+      command: ping -c 2 "{{ your_proxmox_host }}"
+      changed_when: false 
+      check_mode: false
+      register: ping_Proxmox
+    - set_fact:
+        fix_proxmox: true
+      when: ping_Proxmox.rc == 1 or ping_Proxmox.rc > 2
+#Fix Proxmox
+- name: Fix Server #send commands via IDRAC
+  run_once: true
+  import_playbook: start-server
+  when: fix_proxmox | default(false)
+
+#Check VMs
+- name: Check VMs
+  run_once: true
+  import_playbook: start-server
+
+
 #Check for TrueNAS----------------------------------------------------------------------------------------------------
 - name: Check for the SMB Share being mounted on Applicable VMs/LXCs
   hosts: all

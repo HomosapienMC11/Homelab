@@ -4,12 +4,11 @@
   ignore_unreachable: true
   gather_facts: no
   become: false
+  vars_files:
+    - vars/homelab_common_vars.yml
   vars:
     a_failed_lxcs: false
     a_failed_vms: false
-    proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
-    your_proxmox_username: "sshuser"
-    your_proxmox_host: "10.10.1.10"
   tasks:
 
     #LXCs---------------------------------------------------------------------------------------
