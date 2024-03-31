@@ -19,18 +19,26 @@
 
   - debug:
       msg: "rebooted TN"
+    run_once: true
+    delegate_to: localhost
 
   - debug:
       msg: "Pinging Until Ready TN"
+    run_once: true
+    delegate_to: localhost
 
   #loop pinging until success then continue
 
   - debug:
       msg: "Success! Waiting 20sec"
+    run_once: true
+    delegate_to: localhost
 
   - name: Pause to allow time for TrueNAS to boot
     pause:
       seconds: 20  # Adjust the value as needed to wait for TrueNAS to boot (e.g., 5 minutes)
+    run_once: true
+    delegate_to: localhost
 
   - debug:
       msg: "Success! Mounting All"
