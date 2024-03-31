@@ -40,6 +40,12 @@
   import_playbook: start-server
   when: fix_proxmox | default(false)
 
+#Fix TN
+- name: Fix TrueNAS if Ded
+  run_once: true
+  import_playbook: reboot-truenas
+  when: fix_TrueNAS | default(false)
+
 #Check VMs
 - name: Check VMs
   run_once: true
@@ -49,14 +55,6 @@
 - name: Check LXCs
   run_once: true
   import_playbook: automate-reboots-lxcs
-
-#Check for TrueNAS----------------------------------------------------------------------------------------------------
-
-#conditional playbook runs to fix TN
-- name: Fix TrueNAS if Ded
-  run_once: true
-  import_playbook: reboot-truenas
-  when: fix_TrueNAS | default(false)
 
 #Check for Mounts on Bellow Groups----------------------------------------------------------------------------------------------
 - name: Mount Checks
