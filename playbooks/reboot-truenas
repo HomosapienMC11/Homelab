@@ -39,7 +39,7 @@
     check_mode: false
     register: tempping
     until: tempping.rc == 0
-    retries: 10
+    retries: 30
     delay: 4
 
   - debug:
