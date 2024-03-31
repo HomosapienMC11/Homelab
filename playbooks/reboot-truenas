@@ -14,6 +14,7 @@
     become: true
     become_method: sudo
     run_once: true
+    check_mode: false
     delegate_to: "{{ your_proxmox_host }}"
     shell: |
       sudo /usr/sbin/qm start {{ ID_TrueNAS }}
@@ -59,6 +60,7 @@
   - name: Execute mount -a command with sudo on all hosts in the group
     become: true
     become_method: sudo
+    check_mode: false
     ansible.builtin.shell: sudo mount -a
     when: false
   
@@ -66,6 +68,7 @@
     become: true
     become_method: sudo
     run_once: true
+    check_mode: false
     delegate_to: "{{ your_proxmox_host }}"
     shell: |
       sudo /usr/sbin/pct reboot {{ ID_Zoneminder }}
