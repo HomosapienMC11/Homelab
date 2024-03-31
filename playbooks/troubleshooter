@@ -1,4 +1,5 @@
 ---
+#the dron timing: */10 * * * *
 #Check Proxmox if Its Running-------------------------------------------------------------------------------------------
 - name: Ping Main IPs
   hosts: all
