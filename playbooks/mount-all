@@ -1,0 +1,12 @@
+---
+- name: Mount Everything in Bellow Hosts
+  hosts: SMB:ZM
+  gather_facts: no
+  become: false
+  vars_files:
+    - vars/homelab_common_vars.yml
+  tasks:
+    - name: Mount Em
+      become: true
+      become_method: sudo
+      ansible.builtin.shell: sudo mount -a
