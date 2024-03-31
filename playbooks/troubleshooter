@@ -16,7 +16,7 @@
       ignore_unreachable: true
       ignore_errors: yes
       changed_when: ping_results.rc != 0
-      failed_when: ping_results.[0].rc != 0
+      failed_when: ping_results[0].rc != 0
       loop:
         - "{{ IP_IDRAC }}"
         - "{{ your_proxmox_host }}"
