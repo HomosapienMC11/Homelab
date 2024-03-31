@@ -67,4 +67,4 @@
     run_once: true
     delegate_to: "{{ your_proxmox_host }}"
     shell: |
-      sudo lxc-start -n {{ ID_Zoneminder }}
+      sudo /usr/sbin/pct reboot {{ ID_Zoneminder }}
