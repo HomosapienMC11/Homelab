@@ -37,8 +37,8 @@
     ignore_errors: yes
     changed_when: false 
     check_mode: false
-    register: router_ping
-    until: router_ping.rc == 0
+    register: tempping
+    until: tempping.rc == 0
     retries: 10
     delay: 4
 
