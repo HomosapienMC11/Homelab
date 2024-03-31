@@ -1,5 +1,5 @@
 ---
-- name: Ping VMs and Restart if Unreachable
+- name: Ping LXCs and Restart if Unreachable
   hosts: lxc
   ignore_unreachable: true
   gather_facts: no
@@ -12,7 +12,7 @@
   tasks:
 
     #LXCs---------------------------------------------------------------------------------------
-    - name: ICMP ping from Control Node to Remote Node
+    - name: ICMP ping LXCs
       delegate_to: localhost
       become: true
       become_method: sudo
@@ -22,25 +22,25 @@
       # Because it is an reporting task
       changed_when: false 
       check_mode: false
-      failed_when: router_ping.rc == 1 or router_ping.rc > 2 # will result into success for rc 0 and rc 2
-      register: router_ping
+      failed_when: ping_lxcs.rc == 1 or ping_lxcs.rc > 2 # will result into success for rc 0 and rc 2
+      register: ping_lxcs
 
-    - name: Show Return Code
-      debug:
-        msg: "{{ router_ping.rc }}"
+    #- name: Show Return Code
+    #  debug:
+    #    msg: "{{ ping_lxcs.rc }}"
     
     - name: Gather failed LXC hosts
       set_fact:
         failed_lxcs: "{{ failed_lxcs | default([]) + [hostvars[inventory_hostname].vm_id] }}"
         a_failed_lxcs: true
-      when: router_ping.rc == 1 or router_ping.rc > 2
+      when: ping_lxcs.rc == 1 or ping_lxcs.rc > 2
 
-    - name: Display failed LXC hosts
-      debug:
-        msg: "Failed LXC hosts: {{ failed_lxcs }}"
-      when: a_failed_lxcs
+    #- name: Display failed LXC hosts
+    #  debug:
+    #    msg: "Failed LXC hosts: {{ failed_lxcs }}"
+    #  when: a_failed_lxcs
 
-    - name: Send shell command for failed VMs
+    - name: Send shell command for failed LXCs
       become: true
       become_method: sudo
       delegate_to: "{{ your_proxmox_host }}"
