@@ -1,4 +1,20 @@
 ---
+#Check Proxmox if Its Running-------------------------------------------------------------------------------------------
+- name: Ping Main IPs
+  hosts: all
+  gather_facts: no
+  become: false
+  vars_files:
+    - vars/homelab_common_vars.yml
+  #Initial Pings
+  tasks:
+    - name: ICMP ping of IDRAC
+      run_once: true
+      delegate_to: localhost  # Run only once on the control node
+      command: ping -c 2 "{{ IP_IDRAC }}"
+      changed_when: false 
+      check_mode: false
+      register: ping_IDRAC
 #Check for TrueNAS----------------------------------------------------------------------------------------------------
 - name: Check for the SMB Share being mounted on Applicable VMs/LXCs
   hosts: all

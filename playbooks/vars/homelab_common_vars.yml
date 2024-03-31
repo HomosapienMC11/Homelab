@@ -3,6 +3,7 @@
 proxmox_ssh_key: "/home/semaphore/semaphore"  # Path to your private SSH key file
 your_proxmox_username: "sshuser"
 your_proxmox_host: "10.10.1.10"
+IP_IDRAC: "10.10.8.13"
 IP_TrueNAS: "10.10.1.42"
 ID_TrueNAS: "111"
 IP_Zoneminder: "10.10.1.36"
