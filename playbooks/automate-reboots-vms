@@ -12,7 +12,7 @@
   tasks:
 
 #VMs---------------------------------------------------------------------------------------
-    - name: ICMP ping from Control Node to Remote Node
+    - name: ICMP ping VMs
       delegate_to: localhost
       become: true
       become_method: sudo
@@ -24,9 +24,9 @@
       failed_when: router_ping.rc == 1 or router_ping.rc > 2 # will result into success for rc 0 and rc 2
       register: router_ping
 
-    - name: Show Return Code
-      debug:
-        msg: "{{ router_ping.rc }}"
+    #- name: Show Return Code
+    #  debug:
+    #    msg: "{{ router_ping.rc }}"
     
     - name: Gather failed VM hosts
       set_fact:
@@ -34,10 +34,10 @@
         a_failed_vms: true
       when: router_ping.rc == 1 or router_ping.rc > 2
 
-    - name: Display failed VM hosts
-      debug:
-        msg: "Failed VM hosts: {{ failed_vms }}"
-      when: a_failed_vms
+    #- name: Display failed VM hosts
+    #  debug:
+    #    msg: "Failed VM hosts: {{ failed_vms }}"
+    #  when: a_failed_vms
 
     - name: Send shell command for failed VMs
       become: true
