@@ -26,7 +26,7 @@
       when: false
     
     - name: Fix TrueNAS if Ded
-      run_once: true
+      #run_once: true
       #delegate_to: localhost  # Run only once on the control node
       import_playbook: reboot-truenas
       #debug:
