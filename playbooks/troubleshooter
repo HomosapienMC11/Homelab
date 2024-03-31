@@ -26,6 +26,17 @@
         TrueNAS_Dead: true
       when: router_ping.rc == 1 or router_ping.rc > 2
 
+#conditional playbook runs
+- name: Fix TrueNAS if Ded
+  run_once: true
+  import_playbook: reboot-truenas
+  when: TrueNAS_Dead | default(false)
+
+- name: Continue with the playbook tasks
+  hosts: all
+  gather_facts: no
+  become: false
+  tasks:
     - name: Check if SMB share is mounted
       stat:
         path: /mnt/SASma
@@ -41,9 +52,3 @@
       become_method: sudo
       ansible.builtin.shell: sudo mount -a
       when: needs_mounting and (inventory_hostname in groups['SMB'] or inventory_hostname in groups['ZM'] )
-
-#conditional playbook runs
-- name: Fix TrueNAS if Ded
-  run_once: true
-  import_playbook: reboot-truenas
-  when: TrueNAS_Dead | default(false)
