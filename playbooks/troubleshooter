@@ -36,6 +36,10 @@
   hosts: all
   gather_facts: no
   become: false
+  vars_files:
+    - vars/homelab_common_vars.yml
+  vars:
+    needs_mounting: false
   tasks:
     - name: Check if SMB share is mounted
       stat:
