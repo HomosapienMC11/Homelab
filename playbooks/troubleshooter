@@ -43,8 +43,12 @@
 #Check VMs
 - name: Check VMs
   run_once: true
-  import_playbook: start-server
+  import_playbook: automate-reboots-vms
 
+#Check LXCs
+- name: Check LXCs
+  run_once: true
+  import_playbook: automate-reboots-lxcs
 
 #Check for TrueNAS----------------------------------------------------------------------------------------------------
 - name: Check for the SMB Share being mounted on Applicable VMs/LXCs
