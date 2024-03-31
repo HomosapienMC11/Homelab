@@ -43,7 +43,7 @@
     register: router_ping
     until: router_ping.rc == 0
     retries: 10
-    delay: 4
+    delay: 2
 
   - debug:
       msg: "Success! Waiting 20sec"
