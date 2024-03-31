@@ -106,7 +106,7 @@
       when: smb_mount_check.rc == 1
 
 # Execute mount -a command with sudo when host belongs to SMB or ZM group
-- name: Fix TrueNAS if Ded
+- name: Mounts All if Needed
   run_once: true
   import_playbook: mount-all
   when: needs_mounting | default(false)
