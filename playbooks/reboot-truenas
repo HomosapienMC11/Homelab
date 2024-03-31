@@ -1,0 +1,45 @@
+---
+- name: Reboot TN
+  hosts: SMB
+  gather_facts: no
+  become: false
+  vars_files:
+    - vars/homelab_common_vars.yml
+  tasks:
+  - debug:
+      msg: "Booting TN"
+  - name: Boot TN
+    become: true
+    become_method: sudo
+    run_once: true
+    delegate_to: "{{ your_proxmox_host }}"
+    shell: |
+      sudo /usr/sbin/qm start {{ TrueNAS_ID }}
+    when: false
+
+  - debug:
+      msg: "rebooted TN"
+
+  - debug:
+      msg: "Pinging Until Ready TN"
+
+  #loop pinging until success then continue
+
+  - debug:
+      msg: "Success! Waiting 20sec"
+
+  - name: Pause to allow time for TrueNAS to boot
+    pause:
+      seconds: 20  # Adjust the value as needed to wait for TrueNAS to boot (e.g., 5 minutes)
+
+  - debug:
+      msg: "Success! Mounting All"
+
+  - name: Execute mount -a command with sudo on all hosts in the group
+    become: true
+    become_method: sudo
+    delegate_to: "{{ item }}"
+    ansible.builtin.shell: sudo mount -a
+    loop: "{{ groups['SMB'] }}"
+    loop_control:
+          label: "{{ item }}"
