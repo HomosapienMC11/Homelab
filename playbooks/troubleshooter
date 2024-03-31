@@ -19,10 +19,10 @@
       changed_when: false 
       check_mode: false
       register: ping_IDRAC
-    #- debug:
-    #    msg: "Server / IDRAC is offline!!"
-    #  run_once: true
-    #  when: ping_IDRAC.rc == 1 or ping_IDRAC.rc > 2
+    - debug:
+        msg: "Server / IDRAC is offline!!"
+      run_once: true
+      when: ping_IDRAC.rc == 1 or ping_IDRAC.rc > 2
     #Ping Proxmox
     - name: ICMP ping of Proxmox
       run_once: true
