@@ -10,7 +10,6 @@
   - debug:
       msg: "Booting TN"
     run_once: true
-    delegate_to: localhost
 
   - name: Boot TN
     become: true
@@ -24,12 +23,10 @@
   - debug:
       msg: "rebooted TN"
     run_once: true
-    delegate_to: localhost
 
   - debug:
       msg: "Pinging Until Ready TN"
     run_once: true
-    delegate_to: localhost
 
   #loop pinging until success then continue
   - name: Wait for TrueNAS to become reachable
@@ -48,7 +45,6 @@
   - debug:
       msg: "Success! Waiting 20sec"
     run_once: true
-    delegate_to: localhost
 
   - name: Pause to allow time for TrueNAS to boot
     pause:
@@ -59,7 +55,6 @@
   - debug:
       msg: "Success! Mounting All"
     run_once: true
-    delegate_to: localhost
 
   - name: Execute mount -a command with sudo on all hosts in the group
     become: true
