@@ -24,6 +24,7 @@
     - name: TN is ded
       set_fact:
         TrueNAS_Dead: true
+      run_once: true
       when: router_ping.rc == 1 or router_ping.rc > 2
 
 #conditional playbook runs to fix TN
@@ -48,6 +49,7 @@
 
     - set_fact:
         needs_mounting: true
+      run_once: true
       when: smb_mount_check.stat.exists == false
 
 # Execute mount -a command with sudo when host belongs to SMB or ZM group
