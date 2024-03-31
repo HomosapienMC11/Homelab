@@ -28,9 +28,10 @@
     - name: Fix TrueNAS if Ded
       run_once: true
       delegate_to: localhost  # Run only once on the control node
+      import_playbook: reboot-truenas
       debug:
         msg: "oopa it ded"
-      notify: RebootTrueNAS
-      changed_when: true #handler only works if marked changed
+      #notify: RebootTrueNAS
+      #changed_when: true #handler only works if marked changed
       when: true
       #when: router_ping.rc == 1 or router_ping.rc > 2
