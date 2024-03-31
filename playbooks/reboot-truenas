@@ -6,8 +6,12 @@
   vars_files:
     - vars/homelab_common_vars.yml
   tasks:
+
   - debug:
       msg: "Booting TN"
+    run_once: true
+    delegate_to: localhost
+
   - name: Boot TN
     become: true
     become_method: sudo
@@ -42,6 +46,8 @@
 
   - debug:
       msg: "Success! Mounting All"
+    run_once: true
+    delegate_to: localhost
 
   - name: Execute mount -a command with sudo on all hosts in the group
     become: true
