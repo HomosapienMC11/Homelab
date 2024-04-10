@@ -7,7 +7,7 @@ services:
   teleport:
     image: public.ecr.aws/gravitational/teleport-distroless:15
     container_name: teleport
-    ports:
+    #ports:
       # -- (Optional) Remove this section, when using Traefik
       #- "3080:3080"
       #- "3023:3023"
