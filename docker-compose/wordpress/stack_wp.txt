@@ -1,0 +1,33 @@
+version: '2.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 8282:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: Starkiller1113
+      WORDPRESS_DB_PASSWORD: j@cob1113
+      WORDPRESS_DB_NAME: mcsitedb
+    volumes:
+      - /wordpress:/var/www/html
+    links:
+      - db:db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: mcsitedb
+      MYSQL_USER: Starkiller1113
+      MYSQL_PASSWORD: j@cob1113
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  wordpress:
+  db:

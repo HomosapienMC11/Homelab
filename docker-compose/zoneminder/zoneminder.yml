@@ -1,0 +1,12 @@
+docker run -d --name="Zoneminder" \
+--net="bridge" \
+--privileged="false" \
+--shm-size="20G" \
+-p 8443:443/tcp \
+-p 9010:9000/tcp \
+-e TZ="America/New_York" \
+-e PUID="1000" \
+-e PGID="1000" \
+-v "/mnt/Zoneminder":"/config":rw \
+-v "/mnt/Zoneminder/data":"/var/cache/zoneminder":rw \
+dlandon/zoneminder.master

@@ -1,0 +1,36 @@
+---
+version: "6.9"
+services:
+    radarr:
+        image: linuxserver/radarr
+        container_name: radarr
+        environment:
+            - PUID=1003
+            - PGID=1003
+            - TZ=America/Denver
+            - UMASK_SET=022 #optional
+        volumes:
+            - /mnt/SASma/Config/Radarr:/config
+            - /mnt/SASma/DOWNLOADS:/downloads
+            - /mnt/SASma/Media/Movies:/movies
+        ports:
+            - 7878:7878
+        restart: unless-stopped
+        privileged: true
+    sonarr:
+        image: linuxserver/sonarr
+        container_name: sonarr
+        environment:
+            - PUID=1003
+            - PGID=1003
+            - TZ=America/Denver
+            - UMASK_SET=022
+        volumes:
+            - /mnt/SASma/Config/Sonarr:/config
+            - /mnt/SASma/DOWNLOADS:/downloads
+            - /mnt/SASma/Media/Shows:/shows
+            - /mnt/SASma/Media/Anime:/anime
+        ports:
+            - 8989:8989
+        restart: unless-stopped
+        privileged: true

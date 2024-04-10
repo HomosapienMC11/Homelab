@@ -1,0 +1,37 @@
+---
+version: "6.9"
+services:
+  # decluttarr - Keeps radarr and sonarr download queues free of stalled and redundant items
+  decluttarr:
+   image: ghcr.io/manimatter/decluttarr:latest   
+   container_name: decluttarr
+   restart: always
+   environment:
+     TZ: Europe/Zurich
+     PUID: 1003
+     PGID: 1003
+     # General
+     LOG_LEVEL: INFO
+     #TEST_RUN: True 
+     # Features 
+     REMOVE_TIMER: 3
+     REMOVE_FAILED: True
+     REMOVE_STALLED: True
+     REMOVE_METADATA_MISSING: True     
+     REMOVE_ORPHANS: True
+     REMOVE_UNMONITORED: True
+     PERMITTED_ATTEMPTS: 3
+     NO_STALLED_REMOVAL_QBIT_TAG: Don't Kill If Stalled
+     # Radarr
+     RADARR_URL: http://10.10.1.32:7878
+     RADARR_KEY: f92e7ddde63c47d8808b937dc2c8d4b6
+     # Sonarr
+     SONARR_URL: http://10.10.1.32:8989
+     SONARR_KEY: 319b70cb193c429483b2ea3ae24432fd
+     # Lidarr
+     #LIDARR_URL: http://lidarr:8686
+     #LIDARR_KEY: $LIDARR_KEY     
+     # qBitorrent
+     QBITTORRENT_URL: http://10.10.1.32:8080
+     QBITTORRENT_USERNAME: admin
+     QBITTORRENT_PASSWORD: j@cob1113

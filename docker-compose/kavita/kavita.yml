@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+    kavita:
+        image: jvmilazz0/kavita:latest
+        container_name: kavita
+        volumes:
+            - /mnt/SASma/manga:/manga
+            - /mnt/SASma/comics:/comics
+            - /mnt/SASma/books:/books
+            - /mnt/SASma/Config/kavita:/kavita/config
+        ports:
+            - "5000:5000"
+        environment:
+            - TZ=America/Denver
+        restart: unless-stopped

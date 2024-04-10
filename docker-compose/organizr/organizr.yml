@@ -1,0 +1,15 @@
+version: "3.6"
+services:
+    organizr:
+        container_name: organizr
+        hostname: organizr
+        image: organizr/organizr:latest
+        restart: unless-stopped
+        ports:
+            - 80:80
+        volumes:
+            - /mnt/SASma/Config/organizr:/config
+        environment:
+            - PUID=1003
+            - PGID=1003
+            - TZ=America/Denver

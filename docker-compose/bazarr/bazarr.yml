@@ -1,0 +1,20 @@
+---
+version: "2.1"
+services:
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=America/Denver
+      - UMASK_SET=002 #optional
+    volumes:
+      - /mnt/SASma/Config/bazarr:/config
+      - /mnt/SASma/Media/Movies:/movies #optional
+      - /mnt/SASma/Media/Shows:/shows
+      - /mnt/SASma/Media/Anime:/anime #optional
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+    privileged: true

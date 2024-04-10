@@ -1,0 +1,33 @@
+---
+version: "2.1"
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Denver
+    volumes:
+      - /mnt/SASma/Config/Prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    
+---
+version: "3.7"
+services:
+  prowlarr:
+    image: ghcr.io/hotio/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=002
+      - TZ=America/Denver
+    volumes:
+      - /mnt/SASma/Config/Prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    privileged: true

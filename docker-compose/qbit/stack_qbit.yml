@@ -1,0 +1,29 @@
+---
+version: "5"
+services:
+    qbittorrentvpn:
+        image: markusmcnugen/qbittorrentvpn
+        container_name: qbittorrentvpn
+        privileged: true   
+        environment:
+            #- VPN_USERNAME=y2rmXpqfhxSqgF9D6WJy47Q1
+            #- VPN_PASSWORD=97PJLjEGkFLB8dPRLDiV1tsQ
+            - PUID=0 #optional
+            - PGID=0 #optional
+            - WEBUI_PORT_ENV=8080 #optional
+            - INCOMING_PORT_ENV=8999 #optional
+            - VPN_ENABLED=no
+            - LAN_NETWORK=192.168.1.0/24
+            - NAME_SERVERS=1.1.1.1,8.8.4.4
+        ports:
+            - 8080:8080
+            - 8999:8999
+            - 8999:8999/udp
+        volumes:
+            - /mnt/SASma/Config/QBittorrentVPN:/config
+            - /mnt/SASma/DOWNLOADS:/downloads
+        restart: unless-stopped
+        cap_add:
+            - net_admin
+        devices:
+            - /dev/net/tun

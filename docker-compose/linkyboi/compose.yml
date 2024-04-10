@@ -1,0 +1,69 @@
+version: "3.6"
+
+services:
+  linkding:
+
+    cap_drop:
+      - "AUDIT_CONTROL"
+      - "BLOCK_SUSPEND"
+      - "DAC_READ_SEARCH"
+      - "IPC_LOCK"
+      - "IPC_OWNER"
+      - "LEASE"
+      - "LINUX_IMMUTABLE"
+      - "MAC_ADMIN"
+      - "MAC_OVERRIDE"
+      - "NET_ADMIN"
+      - "NET_BROADCAST"
+      - "SYSLOG"
+      - "SYS_ADMIN"
+      - "SYS_BOOT"
+      - "SYS_MODULE"
+      - "SYS_NICE"
+      - "SYS_PACCT"
+      - "SYS_PTRACE"
+      - "SYS_RAWIO"
+      - "SYS_RESOURCE"
+      - "SYS_TIME"
+      - "SYS_TTY_CONFIG"
+      - "WAKE_ALARM"
+
+    command:
+      - "./bootstrap.sh"
+
+    container_name: "linkding"
+
+    environment:
+      - "PATH=/opt/venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
+      - "PYTHON_VERSION=3.10.6"
+      - "PYTHON_PIP_VERSION=22.2.1"
+      - "PYTHON_SETUPTOOLS_VERSION=63.2.0"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/5eaac1050023df1f5c98b173b248c260023f2278/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=5aefe6ade911d997af080b315ebcb7f882212d070465df544e1175ac2be519b4"
+      - "VIRTUAL_ENV=/opt/venv"
+
+    hostname: "5ef0fd340078"
+
+    image: "sissbruecker/linkding:latest"
+
+    ipc: "private"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    mac_address: "02:42:ac:11:00:03"
+
+    network_mode: "bridge"
+
+    ports:
+      - "9090:9090/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/mnt/Config/linkding:/etc/linkding/data"
+
+    working_dir: "/etc/linkding"
