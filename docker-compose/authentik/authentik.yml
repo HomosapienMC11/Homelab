@@ -91,7 +91,7 @@ services:
       - AUTHENTIK_REDIS__HOST=authentik-redis
       - AUTHENTIK_POSTGRESQL__HOST=authentik-db
       - AUTHENTIK_POSTGRESQL__USER=${POSTGRES_USER}
-      - AUTHENTIK_POSTGRESQL__NAME=${POSTGRES_DB
+      - AUTHENTIK_POSTGRESQL__NAME=${POSTGRES_DB}
       - AUTHENTIK_POSTGRESQL__PASSWORD=${POSTGRES_PASSWORD}
       # (Required)  To generate a secret key run the following command:
       #             echo $(openssl rand -base64 32)
