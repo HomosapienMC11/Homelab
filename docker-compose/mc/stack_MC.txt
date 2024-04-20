@@ -13,7 +13,7 @@ services:
     ports:
       - "25565:25565"
     volumes:
-      - /srv/dev-disk-by-uuid-01D78C9F03AB84E0/Minecraft/SERVER/1.19:/data
+      - /mnt/server/Minecraft/SERVER/atm9:/data
     restart: unless-stopped
 volumes:
   mc-paper: {}
