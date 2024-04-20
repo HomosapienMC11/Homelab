@@ -22,7 +22,7 @@ services:
       INIT_MEMORY: "10G"
       # Set this to allow Minecraft to access more RAM for world generation
       # if you keep getting stuck at "Preparing spawn area"
-      MAX_MEMORY: "26G"
+      MAX_MEMORY: "28G"
       # The Version Minecraft Server to run
       VERSION: "1.20.1"
       # Accept the End User License Agreement
