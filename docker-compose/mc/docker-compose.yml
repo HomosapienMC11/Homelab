@@ -15,7 +15,7 @@ services:
       # The Curse Forge Developer Console API key to use type AUTO_CURSEFORGE. Escape $ symbols with an additional $
       CF_API_KEY: $$2a$10$$4F9WtsEXrsWzwdlau7qs.ukJ/Wsj6l7TCB0dptddct5o33.NgqYDy
       # The Curse Forge URL of the modpack to use. Add the verion URL of the specific version at the end to pin the modpack version
-      CF_PAGE_URL: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-9/download/5226663"
+      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/all-the-mods-9/download/5226663
       # The project ID of mods to exclude.
       CF_EXCLUDE_MODS: "486778"
       # Java memory heap size
