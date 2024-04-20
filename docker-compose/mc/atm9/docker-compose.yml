@@ -17,7 +17,7 @@ services:
       # The Curse Forge URL of the modpack to use. Add the verion URL of the specific version at the end to pin the modpack version
       CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/all-the-mods-9/download/5226663
       # The project ID of mods to exclude.
-      CF_EXCLUDE_MODS: "486778"
+      #CF_EXCLUDE_MODS: "486778"
       # Java memory heap size
       MEMORY: "20G"
       # Set this to allow Minecraft to access more RAM for world generation
