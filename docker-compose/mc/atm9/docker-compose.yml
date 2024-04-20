@@ -19,7 +19,7 @@ services:
       # The project ID of mods to exclude.
       #CF_EXCLUDE_MODS: "486778"
       # Java memory heap size
-      MEMORY: "24G"
+      INIT_MEMORY: "10G"
       # Set this to allow Minecraft to access more RAM for world generation
       # if you keep getting stuck at "Preparing spawn area"
       MAX_MEMORY: "26G"
@@ -27,6 +27,12 @@ services:
       VERSION: "1.20.1"
       # Accept the End User License Agreement
       EULA: "TRUE"
+      VIEW_DISTANCE: "8"
+      SIMULATION_DISTANCE: "4"
+      STOP_SERVER_ANNOUNCE_DELAY: "30"
+      ENABLE_AUTOPAUSE: "TRUE"
+      AUTOPAUSE_TIMEOUT_EST: "1800"
+
     volumes:
       # attach the relative directory 'data' to the container's /data path
       - /mnt/server/Minecraft/SERVER/atm9:/data
