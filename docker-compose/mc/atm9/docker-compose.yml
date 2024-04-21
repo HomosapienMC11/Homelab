@@ -36,7 +36,7 @@ services:
     volumes:
       # attach the relative directory 'data' to the container's /data path
       - /mnt/server/Minecraft/SERVER/atm9:/data
-    restart: on-failure:3
+    restart: unless-stopped
 
 #services:
 #  mc:
