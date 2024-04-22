@@ -27,11 +27,25 @@ services:
       VERSION: "1.20.1"
       # Accept the End User License Agreement
       EULA: "TRUE"
+
+      #server options:
       VIEW_DISTANCE: "8"
       SIMULATION_DISTANCE: "4"
       STOP_SERVER_ANNOUNCE_DELAY: "30"
-      ENABLE_AUTOPAUSE: "TRUE"
-      AUTOPAUSE_TIMEOUT_EST: "1800"
+      MAX_PLAYERS: "20"
+      ONLINE_MODE: "TRUE"
+      #OVERRIDE_ICON: "TRUE"
+      #ICON: ""
+
+      MAX_TICK_TIME: "-1"
+      ENABLE_AUTOPAUSE: "FALSE"
+      #AUTOPAUSE_TIMEOUT_EST: "1800"
+
+      #genreal server stuffs:
+      SERVER_NAME: "Dumb Idiots Play MC"
+      MOTD: "For Da Bois!"
+      DIFFICULTY: normal
+      
 
     volumes:
       # attach the relative directory 'data' to the container's /data path
