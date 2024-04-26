@@ -1,0 +1,14 @@
+version: "3.3"
+services:
+  rclone:
+    container_name: rclone2
+    environment:
+      - PUID=0
+      - PGID=0
+    volumes:
+      - /mnt/SASma/Config:/source
+      - /mnt/external/HDDMOVE:/destination
+    image: rclone/rclone
+    command: copy --ignore-existing --progress --transfers ${transfers} /source
+      /destination --exclude "/mnt/SASma/Config/TN/**" --dry-run
+networks: {}
