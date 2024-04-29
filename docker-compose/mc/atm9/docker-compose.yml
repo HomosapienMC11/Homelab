@@ -10,7 +10,7 @@ services:
     ports:
       - "25565:25565"
     environment:
-      JVM_XX_OPTS: "+UseG1GC"
+      JVM_XX_OPTS: "-XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:ParallelGCThreads=6 -XX:MaxGCPauseMillis=50"
       GUI: "FALSE"
       # The type of server to use chosen from: https://docker-minecraft-server.readthedocs.io/en/latest/types-and-platforms/
       TYPE: "AUTO_CURSEFORGE"
@@ -24,7 +24,7 @@ services:
       INIT_MEMORY: "10G"
       # Set this to allow Minecraft to access more RAM for world generation
       # if you keep getting stuck at "Preparing spawn area"
-      MAX_MEMORY: "48G"
+      MAX_MEMORY: "44G"
       # The Version Minecraft Server to run
       VERSION: "1.20.1"
       # Accept the End User License Agreement
@@ -32,7 +32,7 @@ services:
 
       #server options:
       VIEW_DISTANCE: "8"
-      SIMULATION_DISTANCE: "4"
+      SIMULATION_DISTANCE: "3"
       STOP_SERVER_ANNOUNCE_DELAY: "30"
       MAX_PLAYERS: "20"
       ONLINE_MODE: "TRUE"
