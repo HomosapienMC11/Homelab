@@ -3,16 +3,16 @@ version: "2.1"
 services:
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
-    container_name: syncthing
-    hostname: syncthing #optional
+    container_name: syncthing_extenal
+    hostname: syncthing_extenal #optional
     environment:
-      - PUID=1003
-      - PGID=1003
+      - PUID=1001
+      - PGID=1001
       - TZ=America/Denver
     volumes:
-      - /mnt/SASma/Config/syncthing:/config
-      #- /path/to/data1:/data1
-      #- /path/to/data2:/data2
+      - /mnt/SASma/Config/syncthing_extenal:/config
+      - /mnt/important:/SAS
+      - /mnt/external/ImportantFiles:/external
     ports:
       - 8384:8384
       - 22000:22000/tcp
