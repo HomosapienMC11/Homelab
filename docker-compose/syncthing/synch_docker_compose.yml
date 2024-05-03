@@ -1,7 +1,7 @@
 ---
 version: "2.1"
 services:
-  syncthing:
+  syncthingext:
     image: lscr.io/linuxserver/syncthing:latest
     container_name: syncthing_extenal
     hostname: syncthing_extenal #optional
@@ -19,3 +19,25 @@ services:
       - 22000:22000/udp
       - 21027:21027/udp
     restart: unless-stopped
+  syncthingsas:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing_sas
+    depends_on:
+      syncthingext:
+        condition: service_healthy
+        restart: true
+    hostname: syncthing_sas #optional
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=America/Denver
+    volumes:
+      - /mnt/SASma/Config/syncthing_sas:/config
+      - /mnt/important:/SAS
+      - /mnt/external/ImportantFiles:/external
+    ports:
+      - 8385:8384
+      - 22001:22000/tcp
+      - 22001:22000/udp
+      - 21028:21027/udp
+    restart: unless-stopped  

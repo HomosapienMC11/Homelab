@@ -2,6 +2,19 @@
 version: "3.8"
 
 services:
+  web:
+    image: itzg/rcon
+    environment:
+      RWA_USERNAME: admin
+      RWA_PASSWORD: admin
+      RWA_ADMIN: "TRUE"
+      # is referring to the hostname of 'mc' compose service below
+      RWA_RCON_HOST: minecraft
+      # needs to match the RCON_PASSWORD configured for the container
+      RWA_RCON_PASSWORD: "fuck1234!@#$"
+    ports:
+      - "4326:4326"
+      - "4327:4327"
   minecraft:
     image: itzg/minecraft-server
     container_name: atm9
