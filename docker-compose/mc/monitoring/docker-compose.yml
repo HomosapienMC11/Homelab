@@ -5,6 +5,9 @@ services:
     image: bitnami/prometheus
     tty: true
     stdin_open: true
+    environment:
+            - PUID=0
+            - PGID=0
     ports:
       - "9090:9090"
     volumes:
@@ -18,6 +21,9 @@ services:
   grafana:
     image: grafana/grafana
     stdin_open: true
+    environment:
+            - PUID=0
+            - PGID=0
     ports:
       - "3000:3000"
     volumes:
