@@ -11,7 +11,7 @@ services:
       # is referring to the hostname of 'mc' compose service below
       RWA_RCON_HOST: minecraft
       # needs to match the RCON_PASSWORD configured for the container
-      RWA_RCON_PASSWORD: "fuck1234!@#$"
+      RWA_RCON_PASSWORD: "fuck1234"
     ports:
       - "4326:4326"
       - "4327:4327"
@@ -23,7 +23,7 @@ services:
     ports:
       - "25565:25565"
     environment:
-      JVM_XX_OPTS: "-XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:ParallelGCThreads=6 -XX:MaxGCPauseMillis=50"
+      JVM_XX_OPTS: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=45 -XX:G1MaxNewSizePercent=55 -XX:G1HeapRegionSize=16M -XX:G1ReservePercent=15 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=20 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -jar paperclip.jar nogui"
       GUI: "FALSE"
       # The type of server to use chosen from: https://docker-minecraft-server.readthedocs.io/en/latest/types-and-platforms/
       TYPE: "AUTO_CURSEFORGE"
@@ -37,13 +37,13 @@ services:
       INIT_MEMORY: "10G"
       # Set this to allow Minecraft to access more RAM for world generation
       # if you keep getting stuck at "Preparing spawn area"
-      MAX_MEMORY: "44G"
+      MAX_MEMORY: "30G"
       # The Version Minecraft Server to run
       VERSION: "1.20.1"
       # Accept the End User License Agreement
       EULA: "TRUE"
 
-      RCON_PASSWORD: "fuck1234!@#$"
+      RCON_PASSWORD: "fuck1234"
 
       #server options:
       VIEW_DISTANCE: "8"
@@ -61,7 +61,7 @@ services:
       #genreal server stuffs:
       SERVER_NAME: "Dumb Idiots Play MC"
       MOTD: "For Da Bois!"
-      DIFFICULTY: normal
+      DIFFICULTY: hard
       
 
     volumes:
