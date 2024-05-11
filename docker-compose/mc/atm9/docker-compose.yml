@@ -2,19 +2,19 @@
 version: "3.8"
 
 services:
-  web:
-    image: itzg/rcon
-    environment:
-      RWA_USERNAME: admin
-      RWA_PASSWORD: admin
-      RWA_ADMIN: "TRUE"
-      # is referring to the hostname of 'mc' compose service below
-      RWA_RCON_HOST: minecraft
-      # needs to match the RCON_PASSWORD configured for the container
-      RWA_RCON_PASSWORD: "fuck1234"
-    ports:
-      - "4326:4326"
-      - "4327:4327"
+  #web:
+  #  image: itzg/rcon
+  #  environment:
+  #    RWA_USERNAME: admin
+  #    RWA_PASSWORD: admin
+  #    RWA_ADMIN: "TRUE"
+  #    # is referring to the hostname of 'mc' compose service below
+  #    RWA_RCON_HOST: minecraft
+  #    # needs to match the RCON_PASSWORD configured for the container
+  #    RWA_RCON_PASSWORD: "fuck1234"
+  #  ports:
+  #    - "4326:4326"
+  #    - "4327:4327"
   minecraft:
     image: itzg/minecraft-server
     container_name: atm9
@@ -68,22 +68,3 @@ services:
       # attach the relative directory 'data' to the container's /data path
       - /mnt/server/Minecraft/SERVER/atm9:/data
     restart: unless-stopped
-
-#services:
-#  mc:
-#    image: itzg/minecraft-server
-#    container_name: paper
-#    environment:
-#      PUID: 1000
-#      PGID: 1000
-#      EULA: "true"
-#      TYPE: PAPER
-#      MEMORY: 24G
-#      VERSION: 1.19.4
-#    ports:
-#      - "25565:25565"
-#    volumes:
-#      - /mnt/server/Minecraft/SERVER/atm9:/data
-#    restart: unless-stopped
-#volumes:
-#  mc-paper: {}

@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  filebrowser:
+    image: hurlenko/filebrowser
+    user: 1001:1001
+    ports:
+      - 2443:8080
+    volumes:
+      - /mnt:/data
+      - /mnt/Config/fb:/config
+    environment:
+      - FB_BASEURL=/filebrowser
+    restart: always

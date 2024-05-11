@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  prometheus:
+    image: bitnami/prometheus
+    tty: true
+    stdin_open: true
+    user: root
+    ports:
+      - "9090:9090"
+    volumes:
+      # The path on your local computer where the prometheus configuration exists mapped to /etc/prometheus/prometheus.yml within the prometheus container
+      - /mnt/server/Minecraft/SERVER/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: on-failure:3
+    networks:
+      atm9_default:
+        aliases:
+          - prometheus
+  grafana:
+    image: grafana/grafana
+    stdin_open: true
+    user: root
+    ports:
+      - "3000:3000"
+    volumes:
+      # The path on your local computer where the grafana data will be written to mapped to /var/lib/grafana inside the grafana container
+      - /mnt/server/Minecraft/SERVER/monitoring/grafana:/var/lib/grafana
+    restart: on-failure:3
+    networks:
+      atm9_default:
+        aliases:
+          - grafana
+
+# Docker network configurations
+networks:
+  # The network to configure
+  atm9_default:
+    # The minecraft network will be created if it does not exist
+    name: atm9_default
+    external: true
