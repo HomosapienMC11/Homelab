@@ -15,6 +15,7 @@ services:
   #  ports:
   #    - "4326:4326"
   #    - "4327:4327"
+
   minecraft:
     image: itzg/minecraft-server
     container_name: atm9
@@ -86,3 +87,8 @@ services:
       # attach the relative directory 'data' to the container's /data path
       - /mnt/server/Minecraft/SERVER/atm9:/data
     restart: unless-stopped
+
+networks:
+    atm9_default:
+      name: atm9_default
+      external: true
