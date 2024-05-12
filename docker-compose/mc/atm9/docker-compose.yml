@@ -36,7 +36,11 @@ services:
       CF_IGNORE_MISSING_FILES: |
         mods/SimpleBackups*.jar
       # The project ID of mods to exclude.
-      CF_EXCLUDE_MODS: "583228"
+      #simplebackups, getittogetherdrops, clumps
+      CF_EXCLUDE_MODS:  |
+        583228 
+        411045
+        256717
       # Java memory heap size
       INIT_MEMORY: "10G"
       # Set this to allow Minecraft to access more RAM for world generation
