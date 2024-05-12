@@ -34,14 +34,17 @@ services:
       # The Curse Forge URL of the modpack to use. Add the verion URL of the specific version at the end to pin the modpack version
       CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/all-the-mods-9/download/5226663
       #ignore mods
-      CF_IGNORE_MISSING_FILES: |
-        mods/SimpleBackups*.jar
+      
       # The project ID of mods to exclude.
       #simplebackups, getittogetherdrops, clumps
       CF_EXCLUDE_MODS:  |
         583228 
         411045
         256717
+      CF_IGNORE_MISSING_FILES: |
+        mods/SimpleBackups*.jar
+        mods/Clumps-forge*.jar
+        mods/getittogetherdrops-forge*.jar
       # Java memory heap size
       INIT_MEMORY: "10G"
       # Set this to allow Minecraft to access more RAM for world generation
