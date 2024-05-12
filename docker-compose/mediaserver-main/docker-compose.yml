@@ -17,6 +17,10 @@ services:
             - 7878:7878
         restart: unless-stopped
         privileged: true
+        networks:
+            media:
+                aliases:
+                    - radarr
     sonarr_anime:
         image: linuxserver/sonarr
         container_name: sonarr
@@ -34,6 +38,10 @@ services:
             - 8989:8989
         restart: unless-stopped
         privileged: true
+        networks:
+            media:
+                aliases:
+                    - sonarr_anime
     sonarr_shows:
         image: linuxserver/sonarr
         container_name: sonarr
@@ -51,3 +59,21 @@ services:
             - 8990:8989
         restart: unless-stopped
         privileged: true
+        networks:
+            media:
+                aliases:
+                    - sonarr_shows
+    recyclarr:
+        image: ghcr.io/recyclarr/recyclarr
+        container_name: recyclarr
+        user: 1003:1003
+        networks: [media]
+        volumes:
+            - /mnt/SASma/Config/recyclarr:/config
+        environment:
+            - TZ=America/Virgin
+networks:
+  # The network to configure
+  media:
+    # The minecraft network will be created if it does not exist
+    name: media
