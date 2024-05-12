@@ -23,7 +23,7 @@ services:
                     - radarr
     sonarr_anime:
         image: linuxserver/sonarr
-        container_name: sonarr
+        container_name: sonarr_anime
         environment:
             - PUID=1003
             - PGID=1003
@@ -44,7 +44,7 @@ services:
                     - sonarr_anime
     sonarr_shows:
         image: linuxserver/sonarr
-        container_name: sonarr
+        container_name: sonarr_shows
         environment:
             - PUID=1003
             - PGID=1003
