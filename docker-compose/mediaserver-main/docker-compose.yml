@@ -10,7 +10,7 @@ services:
             - TZ=America/Virgin
             - UMASK_SET=022 #optional
         volumes:
-            - /mnt/SASma/Config/Radarr:/config
+            - /mnt/Config/Radarr:/config
             - /mnt/SASma/DOWNLOADS:/downloads
             - /mnt/SASma/Media/Movies:/movies
         ports:
@@ -30,7 +30,7 @@ services:
             - TZ=America/Virgin
             - UMASK_SET=022
         volumes:
-            - /mnt/SASma/Config/Sonarr_Anime:/config
+            - /mnt/Config/Sonarr_Anime:/config
             - /mnt/SASma/DOWNLOADS:/downloads
             #- /mnt/SASma/Media/Shows:/shows
             - /mnt/SASma/Media/Anime:/anime
@@ -51,7 +51,7 @@ services:
             - TZ=America/Virgin
             - UMASK_SET=022
         volumes:
-            - /mnt/SASma/Config/Sonarr_Shows:/config
+            - /mnt/Config/Sonarr_Shows:/config
             - /mnt/SASma/DOWNLOADS:/downloads
             - /mnt/SASma/Media/Shows:/shows
             #- /mnt/SASma/Media/Anime:/anime
