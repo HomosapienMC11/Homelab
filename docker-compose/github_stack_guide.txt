@@ -1,0 +1,6 @@
+- Select Repo
+Repo URL: https://github.com/HomosapienMC11/Homelab
+Repo Ref: refs/heads/Ansible
+Compose Path: docker-compose/FOLDER/docker-compose.yml
+
+Select Git Ops Updates if Auto Updates

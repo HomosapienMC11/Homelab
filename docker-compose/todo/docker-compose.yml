@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  tahskr:
+    container_name: tahskr-server
+    image: dullage/tahskr-server:latest
+    environment:
+      TAHSKR_ADMIN_PASSWORD: "%0VhBQICo3pin@#pECvQ"
+    volumes:
+      - "/path/for/database:/app/data"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
