@@ -5,7 +5,7 @@ services:
         image: vikunja/vikunja
         environment:
             VIKUNJA_SERVICE_PUBLICURL: https://todo.local.bigserverenergy.com
-            VIKUNJA_DATABASE_PASSWORD: 7M2uvi7*5lTSNCXf09oR
+            VIKUNJA_DATABASE_PASSWORD: 7M2uvi7*5lTSNCXf09or
             VIKUNJA_DATABASE_TYPE: mysql
             VIKUNJA_DATABASE_USER: vikunja
             VIKUNJA_DATABASE_DATABASE: vikunja
@@ -24,7 +24,7 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: 7H*7TwGjInWMu23$B%wB
             MYSQL_USER: vikunja
-            MYSQL_PASSWORD: 7M2uvi7*5lTSNCXf09oR
+            MYSQL_PASSWORD: 7M2uvi7*5lTSNCXf09or
             MYSQL_DATABASE: vikunja
         volumes:
             - ./db:/var/lib/mysql
