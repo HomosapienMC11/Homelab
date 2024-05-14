@@ -7,7 +7,7 @@ services:
     environment:
       TAHSKR_ADMIN_PASSWORD: "%0VhBQICo3pin@#pECvQ"
     volumes:
-      - "/path/for/database:/app/data"
+      - "/home/iot/tahskr:/app/data"
     ports:
       - "8080:8080"
     restart: unless-stopped
