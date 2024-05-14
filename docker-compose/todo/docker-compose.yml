@@ -1,8 +1,8 @@
 version: "3"
 
 services:
-  tahskr:
-    container_name: tahskr-server
+  tahskr_server:
+    container_name: tahskr-server2
     image: dullage/tahskr-server:latest
     environment:
       TAHSKR_ADMIN_PASSWORD: "%0VhBQICo3pin@#pECvQ"
