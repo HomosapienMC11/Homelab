@@ -18,6 +18,10 @@ services:
             db:
                 condition: service_healthy
         restart: unless-stopped
+        networks:
+          vikunja:
+            aliases:
+              - api
     db:
         image: mariadb:10
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -29,24 +33,15 @@ services:
         volumes:
             - ./db:/var/lib/mysql
         restart: unless-stopped
+        networks:
+          vikunja:
+            aliases:
+              - db
         healthcheck:
             test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
             interval: 2s
             start_period: 30s
 
-##todo
-#todo:
-#  loadBalancer:
-#    servers:
-#      - url: "https://10.10.1.33:3456/"
-#    passHostHeader: true
-##todo
-#todo:
-#  entryPoints:
-#    - "https"
-#  rule: "Host(`todo.local.bigserverenergy.com`)"
-#  middlewares:
-#    - default-headers
-#    - https-redirectscheme
-#  tls: {}
-#  service: todo
+networks:
+    vikunja:
+      name: vikunja
