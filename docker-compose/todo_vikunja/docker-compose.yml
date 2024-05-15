@@ -6,7 +6,7 @@ services:
         environment:
             VIKUNJA_SERVICE_PUBLICURL: https://todo.local.bigserverenergy.com
             VIKUNJA_DATABASE_PASSWORD: 7M2uvi7*5lTSNCXf09or
-            VIKUNJA_DATABASE_TYPE: mysql
+            VIKUNJA_DATABASE_TYPE: postgres
             VIKUNJA_DATABASE_USER: vikunja
             VIKUNJA_DATABASE_DATABASE: vikunja
             VIKUNJA_SERVICE_JWTSECRET: Wq2s&pXevuT*YRduljfc
@@ -26,24 +26,20 @@ services:
           - "traefik.docker.network=proxy"
           - "traefik.http.routers.todo-secure.entrypoints=https"
           - "traefik.http.routers.todo-secure.rule=Host(`todo.local.bigserverenergy.com`)"
-          - "traefik.http.routers.todo-secure.tls=true"
-          - "traefik.http.routers.todo-secure.service=todo"
-          - "traefik.http.services.todo.loadbalancer.server.port=3456"
+          #- "traefik.http.routers.todo-secure.tls=true"
+          #- "traefik.http.routers.todo-secure.service=todo"
+          #- "traefik.http.services.todo.loadbalancer.server.port=3456"
     db:
-        image: mariadb:10
-        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        image: postgres:16
         environment:
-            MYSQL_ROOT_PASSWORD: 7H*7TwGjInWMu23$B%wB
-            MYSQL_USER: vikunja
-            MYSQL_PASSWORD: 7M2uvi7*5lTSNCXf09or
-            MYSQL_DATABASE: vikunja
+            POSTGRES_PASSWORD: 7H*7TwGjInWMu23$B%wB
+            POSTGRES_USER: vikunja
         volumes:
-            - ./db:/var/lib/mysql
+          - ./db:/var/lib/postgresql/data
         restart: unless-stopped
         healthcheck:
-            test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
-            interval: 2s
-            start_period: 30s
+          test: ["CMD-SHELL", "pg_isready -h localhost -U $$POSTGRES_USER"]
+          interval: 2s
 
 networks:
   proxy:
