@@ -33,3 +33,20 @@ services:
             test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
             interval: 2s
             start_period: 30s
+
+##todo
+#todo:
+#  loadBalancer:
+#    servers:
+#      - url: "https://10.10.1.33:3456/"
+#    passHostHeader: true
+##todo
+#todo:
+#  entryPoints:
+#    - "https"
+#  rule: "Host(`todo.local.bigserverenergy.com`)"
+#  middlewares:
+#    - default-headers
+#    - https-redirectscheme
+#  tls: {}
+#  service: todo

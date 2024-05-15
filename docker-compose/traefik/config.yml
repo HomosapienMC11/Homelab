@@ -85,6 +85,16 @@ http:
         - https-redirectscheme
       tls: {}
       service: plex
+    #todo
+    todo:
+      entryPoints:
+        - "https"
+      rule: "Host(`todo.local.bigserverenergy.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: todo
 
 #endregion
 #region services
@@ -140,6 +150,12 @@ http:
       loadBalancer:
         servers:
           - url: "https://10.10.1.46:32400/"
+        passHostHeader: true
+    #todo
+    todo:
+      loadBalancer:
+        servers:
+          - url: "https://10.10.1.33:3456/"
         passHostHeader: true
 #endregion
   middlewares:
