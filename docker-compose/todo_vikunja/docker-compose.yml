@@ -40,8 +40,6 @@ services:
         volumes:
             - ./db:/var/lib/mysql
         restart: unless-stopped
-        networks:
-          vikunja:
         healthcheck:
             test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
             interval: 2s
