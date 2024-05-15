@@ -10,8 +10,8 @@ services:
             VIKUNJA_DATABASE_USER: vikunja
             VIKUNJA_DATABASE_DATABASE: vikunja
             VIKUNJA_SERVICE_JWTSECRET: Wq2s&pXevuT*YRduljfc
-        ports:
-            - 3456:3456
+        #ports:
+        #    - 3456:3456
         volumes:
             - /home/iot/vikunja:/app/vikunja/files
         depends_on:
@@ -19,7 +19,16 @@ services:
                 condition: service_healthy
         restart: unless-stopped
         networks:
-          vikunja:
+          - proxy
+          - default
+        labels:
+          - "traefik.enable=true"
+          #- "traefik.docker.network=web"
+          - "traefik.http.routers.portainer-secure.entrypoints=https"
+          - "traefik.http.routers.portainer-secure.rule=Host(`todo.local.bigserverenergy.com`)"
+          #- "traefik.http.routers.portainer-secure.tls=true"
+          #- "traefik.http.routers.portainer-secure.service=portainer"
+          #- "traefik.http.services.portainer.loadbalancer.server.port=9443"
     db:
         image: mariadb:10
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -39,5 +48,5 @@ services:
             start_period: 30s
 
 networks:
-    vikunja:
-      name: vikunja
+  proxy:
+    external: true
