@@ -20,8 +20,7 @@ services:
         restart: unless-stopped
         networks:
           vikunja:
-            aliases:
-              - api
+            ipv4_address: 172.23.0.200
     db:
         image: mariadb:10
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -35,8 +34,6 @@ services:
         restart: unless-stopped
         networks:
           vikunja:
-            aliases:
-              - db
         healthcheck:
             test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
             interval: 2s
