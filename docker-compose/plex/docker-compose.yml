@@ -1,0 +1,32 @@
+---
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    environment:
+      - PUID=1001
+      - PGID=998
+      - TZ=Etc/UTC
+      - VERSION=docker
+      - PLEX_CLAIM=claim-Tx1yXJrLMSzXZo7b6nGQ
+      #- UMASK_SET=022 #optional
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+    #runtime: nvidia
+    volumes:
+      - /mnt/Config:/config
+      - /mnt/SASma/Media/Anime:/mnt/plex/Anime
+      - /mnt/SASma/Media/Shows:/mnt/plex/Shows
+      - /mnt/SASma/Media/Movies:/mnt/plex/Movies
+    restart: always
+    privileged: true
+
+# Repo URL: https://github.com/HomosapienMC11/Homelab
+# Repo Ref: refs/heads/Ansible
+# Compose Path: docker-compose/plex/docker-compose.yml
