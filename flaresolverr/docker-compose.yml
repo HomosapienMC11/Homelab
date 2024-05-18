@@ -12,4 +12,7 @@ services:
       - TZ=Europe/London
     ports:
       - "${PORT:-8191}:8191"
-    restart: unless-stopped 
+    restart: unless-stopped
+# Repo URL: https://github.com/HomosapienMC11/Homelab
+# Repo Ref: refs/heads/Ansible
+# Compose Path: docker-compose/flaresolverr/docker-compose.yml
