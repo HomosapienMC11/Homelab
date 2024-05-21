@@ -3,14 +3,14 @@ version: "6.9"
 services:
     radarr:
         image: linuxserver/radarr
-        container_name: radarr
+        container_name: radarr_HD
         environment:
             - PUID=1003
             - PGID=1003
             - TZ=America/Virgin
             - UMASK_SET=022 #optional
         volumes:
-            - /mnt/Config/Radarr:/config
+            - /mnt/Config/Radarr_HD:/config
             - /mnt/SASma/DOWNLOADS:/downloads
             - /mnt/SASma/Media/Movies:/movies
         ports:
@@ -20,19 +20,19 @@ services:
         networks:
             media:
                 aliases:
-                    - radarr
-    sonarr_anime:
+                    - radarr_HD
+    sonarr_HD:
         image: linuxserver/sonarr
-        container_name: sonarr_anime
+        container_name: sonarr_HD
         environment:
             - PUID=1003
             - PGID=1003
             - TZ=America/Virgin
             - UMASK_SET=022
         volumes:
-            - /mnt/Config/Sonarr_Anime:/config
+            - /mnt/Config/Sonarr_HD:/config
             - /mnt/SASma/DOWNLOADS:/downloads
-            #- /mnt/SASma/Media/Shows:/shows
+            - /mnt/SASma/Media/Shows:/shows
             - /mnt/SASma/Media/Anime:/anime
         ports:
             - 8989:8989
@@ -41,28 +41,7 @@ services:
         networks:
             media:
                 aliases:
-                    - sonarr_anime
-    sonarr_shows:
-        image: linuxserver/sonarr
-        container_name: sonarr_shows
-        environment:
-            - PUID=1003
-            - PGID=1003
-            - TZ=America/Virgin
-            - UMASK_SET=022
-        volumes:
-            - /mnt/Config/Sonarr_Shows:/config
-            - /mnt/SASma/DOWNLOADS:/downloads
-            - /mnt/SASma/Media/Shows:/shows
-            #- /mnt/SASma/Media/Anime:/anime
-        ports:
-            - 8990:8989
-        restart: unless-stopped
-        privileged: true
-        networks:
-            media:
-                aliases:
-                    - sonarr_shows
+                    - sonarr_HD
     recyclarr:
         image: ghcr.io/recyclarr/recyclarr
         container_name: recyclarr
